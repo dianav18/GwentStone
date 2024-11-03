@@ -1,19 +1,27 @@
 package main;
 
+import cards.hero.Hero;
+import cards.minion.Minion;
 import checker.Checker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
-import fileio.Input;
+import fileio.*;
+import game.Deck;
+import game.Game;
+import game.Player;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -68,6 +76,38 @@ public final class Main {
                 Input.class);
 
         ArrayNode output = objectMapper.createArrayNode();
+
+        for (GameInput inputDataGame : inputData.getGames()) {
+            StartGameInput startGameInput = inputDataGame.getStartGame();
+            int playerOneDeckIdx = startGameInput.getPlayerOneDeckIdx();
+            int playerTwoDeckIdx = startGameInput.getPlayerTwoDeckIdx();
+
+            Hero heroPlayer1 = new Hero(startGameInput.getPlayerOneHero());
+            Hero heroPlayer2 = new Hero(startGameInput.getPlayerTwoHero());
+
+            ArrayList<ArrayList<CardInput>> playerOneDecks = inputData.getPlayerOneDecks().getDecks();
+            ArrayList<ArrayList<CardInput>> playerTwoDecks= inputData.getPlayerTwoDecks().getDecks();
+
+            for (ArrayList<CardInput> deck : playerOneDecks) {
+                List<Minion> minions = new ArrayList<>();
+                for (CardInput card : deck) {
+                    Minion minion = new Minion(card, minion.getRowType(), minion.getType());
+;                }
+            }
+
+            Player player1 = new Player(playerOneDecks,  heroPlayer1);
+            Player player2 = new Player(playerTwoDecks, heroPlayer2);
+            Game game = new Game(player1, player2);
+
+            for (ActionsInput action : inputDataGame.getActions()) {
+                // TODO Execute action
+                switch (action.getCommand()){
+                    case "getPlayerDeck":
+                        //
+                        break;
+                }
+            }
+        }
 
         /*
          * TODO Implement your function here
