@@ -1,37 +1,39 @@
 package game;
 
-import cards.hero.Hero;
 import cards.minion.Minion;
+import fileio.CardInput;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Getter
 public class Player {
-    private final List<Deck> decks;
-    //private int playerIndex;
-    private ArrayList<Minion> currentDeck;
-    private ArrayList<Minion> hand;
-    private int mana;
-    private Hero hero;
 
-    public Player(final ArrayList<Deck> decks, final Hero hero) {
-        //this.playerIndex = playerIndex;
+    private List<Deck> decks;
+    private Deck currentDeck;
+    private Hand hand;
 
+    public Player(ArrayList<ArrayList<CardInput>> decks) {
         this.decks = new ArrayList<>();
-        this.decks.addAll(decks);
+        for (ArrayList<CardInput> deck : decks) {
+            this.decks.add(new Deck(deck));
+        }
+    }
+
+    public void setup(){
+        this.hand = new Hand();
+        // TODO and mana etc
+    }
+
+    public void selectDeck(int index, long seed) {
+        this.currentDeck = decks.get(index).copy();
+        this.currentDeck.shuffle(seed);
     }
 
     public void nextRound(int round){
-        this.mana+=(Math.max(round, 10));// TODO Add as constant
-
-        hand.add(currentDeck.remove(0));
-    }
-
-    public void prepareDeck(int deckIndex){
-        this.currentDeck = decks.get(deckIndex).getMinions()
-                .stream()
-                .map(Minion::copy)
-                .collect(Collectors.toCollection(ArrayList::new));
+        this.hand.getMinions().add(this.currentDeck.getMinions().remove(0));
+        // TODO - add mana according to round and hw requirements
     }
 }

@@ -4,6 +4,7 @@ import fileio.CardInput;
 
 public class Warden extends Minion {
     public Warden(CardInput cardInput) {
-        super(cardInput, Row.FRONT, MinionType.TANK);
+        super(cardInput);
+        this.setIsTank(true);
     }
 }

@@ -1,7 +1,10 @@
 package fileio;
 
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 
+@AllArgsConstructor
 public final class CardInput {
     private int mana;
     private int attackDamage;

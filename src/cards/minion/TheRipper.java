@@ -4,7 +4,9 @@ import fileio.CardInput;
 
 public class TheRipper extends Minion {
     public TheRipper(CardInput cardInput) {
-        super(cardInput, Row.FRONT, MinionType.REGULAR);
+        super(cardInput);
+        this.setRowPosition(Row.FRONT);
+        this.setIsTank(false);
     }
 
     public void weakKnees(Minion enemyMinion) {

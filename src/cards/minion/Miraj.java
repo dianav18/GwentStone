@@ -4,7 +4,9 @@ import fileio.CardInput;
 
 public class Miraj extends Minion {
     public Miraj(CardInput cardInput) {
-        super(cardInput, Row.FRONT, MinionType.REGULAR);
+        super(cardInput);
+        this.setRowPosition(Row.FRONT);
+        this.setIsTank(false);
     }
 
     public void skyjack(Minion enemyMinion) {

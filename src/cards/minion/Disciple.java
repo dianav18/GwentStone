@@ -4,8 +4,10 @@ import fileio.CardInput;
 
 public class Disciple extends Minion {
     public Disciple(CardInput cardInput) {
-        super(cardInput, Row.BACK, MinionType.REGULAR);
+        super(cardInput);
         this.setAttackDamage(0);
+        this.setRowPosition(Row.BACK);
+        this.setIsTank(false);
     }
 
     public void godsPlan(Minion allyMinion) {

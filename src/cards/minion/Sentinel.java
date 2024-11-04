@@ -4,6 +4,7 @@ import fileio.CardInput;
 
 public class Sentinel extends Minion {
     public Sentinel(CardInput cardInput) {
-        super(cardInput, Row.BACK, MinionType.REGULAR);
+        super(cardInput);
+        this.setIsTank(false);
     }
 }
