@@ -1,5 +1,6 @@
 package main;
 
+import cards.hero.Hero;
 import checker.Checker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import debug.GetPlayerDeck;
+import debug.GetPlayerHero;
 import fileio.*;
 import game.Game;
 import game.Player;
@@ -89,6 +91,12 @@ public final class Main {
                     inputDataGame.getStartGame().getShuffleSeed()
             );
 
+            StartGameInput startGameInput = inputDataGame.getStartGame();
+
+            Hero playerOneHero = new Hero(startGameInput.getPlayerOneHero());
+            Hero playerTwoHero = new Hero(startGameInput.getPlayerTwoHero());
+
+
             for (ActionsInput action : inputDataGame.getActions()) {
                 String command = action.getCommand();
                 switch (command) {
@@ -97,7 +105,11 @@ public final class Main {
                         ObjectNode deckOutput = new GetPlayerDeck(game).getPlayerDeck(playerIdx);
                         output.add(deckOutput);
                         break;
-
+                    case "getPlayerHero":
+                        Hero selectedHero = action.getPlayerIdx() == 1 ? playerOneHero : playerTwoHero;
+                        GetPlayerHero getPlayerHeroCommand = new GetPlayerHero(selectedHero, action.getPlayerIdx());
+                        output.add(getPlayerHeroCommand.getHeroData(objectMapper));
+                        break;
                     default:
                         break;
                 }

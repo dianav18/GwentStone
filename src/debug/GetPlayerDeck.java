@@ -25,12 +25,11 @@ public class GetPlayerDeck {
         response.put("command", "getPlayerDeck");
         response.put("playerIdx", playerIdx);
 
-        // Obținem deck-ul jucătorului specificat
         Deck deck;
         if (playerIdx == 1) {
-            deck = game.getPlayer1().getCurrentDeck(); // Presupunând că luăm primul deck
+            deck = game.getPlayer1().getCurrentDeck();
         } else if (playerIdx == 2) {
-            deck = game.getPlayer2().getCurrentDeck(); // Presupunând că luăm primul deck
+            deck = game.getPlayer2().getCurrentDeck();
         } else {
             throw new IllegalArgumentException("Invalid player index: " + playerIdx);
         }
