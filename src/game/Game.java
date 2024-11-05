@@ -37,15 +37,20 @@ public class Game {
         player2.nextRound(this.round);
 
         this.round+=1;
+        turn = (turn == 1) ? 2 : 1;
     }
 
     public Player getPlayerTurn(){
-        if(this.round==1){
+        if(this.turn==1){
             return player1;
         }
-        else if(this.round==2){
+        else if(this.turn==2){
             return player2;
         }
         return null;
+    }
+
+    public int getActivePlayerIndex() {
+        return turn;
     }
 }

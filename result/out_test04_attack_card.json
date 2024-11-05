@@ -1,4 +1,10 @@
 [ {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
   "command" : "getPlayerDeck",
   "playerIdx" : 2,
   "output" : [ {

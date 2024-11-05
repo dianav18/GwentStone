@@ -2,6 +2,7 @@ package game;
 
 import cards.hero.Hero;
 import cards.minion.Minion;
+import fileio.ActionsInput;
 import fileio.CardInput;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,10 @@ public class Player {
     private List<Deck> decks;
     private Deck currentDeck;
     private Hand hand;
+
+    private ActionsInput actionsInput;
+    @Setter
+    private int playerIdx;
 
     public Player(ArrayList<ArrayList<CardInput>> decks) {
         this.decks = new ArrayList<>();

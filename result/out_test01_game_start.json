@@ -82,4 +82,7 @@
     "health" : 30,
     "colors" : [ "Black", "Red", "Grey" ]
   }
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
 } ]

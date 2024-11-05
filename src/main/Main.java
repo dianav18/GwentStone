@@ -11,6 +11,7 @@ import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import debug.GetPlayerDeck;
 import debug.GetPlayerHero;
+import debug.GetPlayerTurn;
 import fileio.*;
 import game.Game;
 import game.Player;
@@ -109,6 +110,11 @@ public final class Main {
                         Hero selectedHero = action.getPlayerIdx() == 1 ? playerOneHero : playerTwoHero;
                         GetPlayerHero getPlayerHeroCommand = new GetPlayerHero(selectedHero, action.getPlayerIdx());
                         output.add(getPlayerHeroCommand.getHeroData(objectMapper));
+                        break;
+                    case "getPlayerTurn":
+                        int activePlayerIndex = game.getActivePlayerIndex();
+                        GetPlayerTurn playerTurn = new GetPlayerTurn(activePlayerIndex);
+                        output.add(playerTurn.getPlayerTurn(objectMapper));
                         break;
                     default:
                         break;
