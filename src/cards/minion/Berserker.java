@@ -4,7 +4,6 @@ import fileio.CardInput;
 
 public class Berserker extends Minion {
     public Berserker(CardInput cardInput) {
-        super(cardInput);
-        this.setIsTank(false);
+        super(cardInput, false, Row.BACK);
     }
 }

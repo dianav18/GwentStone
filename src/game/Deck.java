@@ -1,8 +1,9 @@
 package game;
 
+import cards.Card;
+import cards.minion.*;
 import fileio.CardInput;
 import lombok.Getter;
-import cards.minion.Minion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +22,37 @@ public class Deck {
 
     public Deck(List<CardInput> minions) {
         this.minions = new ArrayList<>();
-
         for (CardInput minion : minions) {
-            this.minions.add(new Minion(minion));
+            switch (minion.getName()){
+                case "Berserker":
+                    this.minions.add(new Berserker(minion));
+                    break;
+                case "Disciple":
+                    this.minions.add(new Disciple(minion));
+                    break;
+                case "Goliath":
+                    this.minions.add(new Goliath(minion));
+                    break;
+                case "Miraj":
+                    this.minions.add(new Miraj(minion));
+                    break;
+                case "Sentinel":
+                    this.minions.add(new Sentinel(minion));
+                    break;
+                case "The Cursed One":
+                    this.minions.add(new TheCursedOne(minion));
+                    break;
+                case "The Ripper":
+                    this.minions.add(new TheRipper(minion));
+                    break;
+                case "Warden":
+                    this.minions.add(new Warden(minion));
+                    break;
+                default:
+                    System.out.println(minion.getName() + " is not a valid minion");
+                    break;
+
+            }
         }
     }
 

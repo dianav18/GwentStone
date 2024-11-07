@@ -4,10 +4,8 @@ import fileio.CardInput;
 
 public class TheCursedOne extends Minion {
     public TheCursedOne(CardInput cardInput) {
-        super(cardInput);
+        super(cardInput, false, Row.BACK);
         this.setAttackDamage(0);
-        this.setRowPosition(Row.BACK);
-        this.setIsTank(false);
     }
 
     public void shapeShift(Minion enemyMinion) {

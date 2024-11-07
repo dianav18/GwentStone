@@ -26,7 +26,7 @@ public class Minion {
 
     private boolean isTank;
 
-    public Minion(CardInput cardInput) {
+    public Minion(CardInput cardInput, boolean isTank, Row rowPosition) {
         this.mana = cardInput.getMana();
         this.health = cardInput.getHealth();
         this.attackDamage = cardInput.getAttackDamage();
@@ -35,6 +35,8 @@ public class Minion {
         this.name = cardInput.getName();
         this.hasAttacked = false;
         this.frozen = false;
+        this.isTank = isTank;
+        this.rowPosition = rowPosition;
     }
 
     public void freeze() {
@@ -54,10 +56,6 @@ public class Minion {
 
     public boolean canAttack() {
         return !hasAttacked && !frozen;
-    }
-
-    protected void setIsTank(boolean b) {
-        this.isTank = b;
     }
 
     public boolean canUseAbility(int abilityHandCost) {

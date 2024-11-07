@@ -9,11 +9,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import debug.GetPlayerDeck;
-import debug.GetPlayerHero;
-import debug.GetPlayerTurn;
+import debug.*;
 import fileio.*;
 import game.Game;
+import game.Hand;
 import game.Player;
 
 import java.io.File;
@@ -79,8 +78,8 @@ public final class Main {
 
         ArrayNode output = objectMapper.createArrayNode();
 
-        Player player1 = new Player(inputData.getPlayerOneDecks().getDecks());
-        Player player2 = new Player(inputData.getPlayerTwoDecks().getDecks());
+        Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks());
+        Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks());
 
         for (GameInput inputDataGame : inputData.getGames()) {
             player1.setup();
@@ -89,14 +88,14 @@ public final class Main {
                     player1, player2,
                     inputDataGame.getStartGame().getPlayerOneDeckIdx(),
                     inputDataGame.getStartGame().getPlayerTwoDeckIdx(),
-                    inputDataGame.getStartGame().getShuffleSeed()
+                    inputDataGame.getStartGame().getShuffleSeed(),
+                    inputDataGame.getStartGame().getStartingPlayer()
             );
 
             StartGameInput startGameInput = inputDataGame.getStartGame();
 
             Hero playerOneHero = new Hero(startGameInput.getPlayerOneHero());
             Hero playerTwoHero = new Hero(startGameInput.getPlayerTwoHero());
-
 
             for (ActionsInput action : inputDataGame.getActions()) {
                 String command = action.getCommand();
@@ -116,7 +115,31 @@ public final class Main {
                         GetPlayerTurn playerTurn = new GetPlayerTurn(activePlayerIndex);
                         output.add(playerTurn.getPlayerTurn(objectMapper));
                         break;
+                    case "getCardsInHand":
+                        int playerIndex = action.getPlayerIdx();
+                        Player targetPlayer = (playerIndex == 1) ? player1 : player2;
+                        GetCardsInHand getCardsInHandCommand = new GetCardsInHand(targetPlayer);
+                        output.add(getCardsInHandCommand.getCardsInHand(objectMapper));
+
+                        break;
+                    case "endPlayerTurn":
+                        game.endTurn(); // TODO Move tgo class and call it
+                        break;
+                    case "placeCard":
+                        int handIndex = action.getHandIdx();
+                        game.placeCard(handIndex, objectMapper, output);
+                        break;
+                    case "getPlayerMana":
+                        int manaPlayerIdx = action.getPlayerIdx();
+                        Player manaTargetPlayer = (manaPlayerIdx == 1) ? player1 : player2;
+                        GetPlayerMana getPlayerManaCommand = new GetPlayerMana(manaTargetPlayer);
+                        output.add(getPlayerManaCommand.getPlayerMana());
+                        break;
+                    case "getCardsOnTable":
+                        output.add(new GetCardsOnTable(game).getCardsOnTable());
+                        break;
                     default:
+                        System.out.println(command + " action not found");
                         break;
                 }
             }

@@ -1,5 +1,6 @@
 package game;
 
+import cards.Card;
 import cards.hero.Hero;
 import cards.minion.Minion;
 import fileio.ActionsInput;
@@ -16,20 +17,30 @@ public class Player {
     private List<Deck> decks;
     private Deck currentDeck;
     private Hand hand;
+    private BoardSide boardSide = new BoardSide();
 
     private ActionsInput actionsInput;
-    @Setter
     private int playerIdx;
+    @Setter
+    private int mana = 1;
+    private int round = 0;
+    @Setter
+    private int player1Idx;
+    @Setter
+    private int player2Idx;
 
-    public Player(ArrayList<ArrayList<CardInput>> decks) {
+    public Player(int playerIdx, ArrayList<ArrayList<CardInput>> decks) {
+        this.playerIdx = playerIdx;
         this.decks = new ArrayList<>();
         for (ArrayList<CardInput> deck : decks) {
             this.decks.add(new Deck(deck));
         }
+        this.mana = 0;
     }
 
     public void setup(){
         this.hand = new Hand();
+        this.mana = 0;
         // TODO and mana etc
     }
 
@@ -38,8 +49,27 @@ public class Player {
         this.currentDeck.shuffle(seed);
     }
 
-    public void nextRound(int round){
-        this.hand.getMinions().add(this.currentDeck.getMinions().remove(0));
-        // TODO - add mana according to round and hw requirements
+    public void nextRound(int round) {
+        if (!currentDeck.getMinions().isEmpty()) {
+            this.hand.getMinions().add(this.currentDeck.getMinions().remove(0));
+        }
+        this.mana += Math.min(round, 10);
     }
+
+    @Getter
+    public static class BoardSide{
+        private Row frontRow;
+        private Row backRow;
+
+        public BoardSide(){
+            this.frontRow = new Row();
+            this.backRow = new Row();
+        }
+
+        @Getter
+        public static class Row{
+            private List<Minion> minions = new ArrayList<>();
+        }
+    }
+
 }

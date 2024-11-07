@@ -35,6 +35,10 @@ public final class Test {
                     Main.action(file.getName(), CheckerConstants.OUT_FILE);
                     break;
                 }
+                if (file.getName().contains(fileName)) {
+                    Main.action(file.getName(), CheckerConstants.OUT_FILE);
+                    break;
+                }
             }
         }
     }
