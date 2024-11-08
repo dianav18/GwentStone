@@ -49,7 +49,6 @@ public class Deck {
                     this.minions.add(new Warden(minion));
                     break;
                 default:
-                    System.out.println(minion.getName() + " is not a valid minion");
                     break;
 
             }

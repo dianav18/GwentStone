@@ -32,11 +32,11 @@ public final class Test {
             String fileName = scanner.next();
             for (File file : inputDir) {
                 if (file.getName().equalsIgnoreCase(fileName)) {
-                    Main.action(file.getName(), CheckerConstants.OUT_FILE);
+                    Main.action(file.getName(), CheckerConstants.OUT_PATH + file.getName());
                     break;
                 }
                 if (file.getName().contains(fileName)) {
-                    Main.action(file.getName(), CheckerConstants.OUT_FILE);
+                    Main.action(file.getName(), CheckerConstants.OUT_PATH + file.getName());
                     break;
                 }
             }

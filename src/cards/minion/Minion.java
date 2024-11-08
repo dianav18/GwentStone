@@ -1,6 +1,7 @@
 package cards.minion;
 
 import cards.Card;
+import delete_me.MessageBuilder;
 import fileio.CardInput;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -89,5 +90,21 @@ public class Minion {
                 this.colors,
                 this.name
         );
+    }
+
+    public boolean hasAttacked() {
+        return this.hasAttacked;
+    }
+
+    @Override
+    public String toString() {
+        return new MessageBuilder("{name}(H{health} A{attack} M{mana} H_A={has_attacked} F={frozen})")
+                .parse("name", this.name)
+                .parse("attack", this.attackDamage)
+                .parse("health", this.health)
+                .parse("mana", this.mana)
+                .parse("has_attacked", this.hasAttacked)
+                .parse("frozen", this.frozen)
+                .parse();
     }
 }

@@ -17,7 +17,7 @@ public class Player {
     private List<Deck> decks;
     private Deck currentDeck;
     private Hand hand;
-    private BoardSide boardSide = new BoardSide();
+//    private BoardSide boardSide = new BoardSide();
 
     private ActionsInput actionsInput;
     private int playerIdx;
@@ -53,23 +53,24 @@ public class Player {
         if (!currentDeck.getMinions().isEmpty()) {
             this.hand.getMinions().add(this.currentDeck.getMinions().remove(0));
         }
+
         this.mana += Math.min(round, 10);
     }
 
-    @Getter
-    public static class BoardSide{
-        private Row frontRow;
-        private Row backRow;
-
-        public BoardSide(){
-            this.frontRow = new Row();
-            this.backRow = new Row();
-        }
-
-        @Getter
-        public static class Row{
-            private List<Minion> minions = new ArrayList<>();
-        }
-    }
+//    @Getter
+//    public static class BoardSide{
+//        private Row frontRow;
+//        private Row backRow;
+//
+//        public BoardSide(){
+//            this.frontRow = new Row();
+//            this.backRow = new Row();
+//        }
+//
+//        @Getter
+//        public static class Row{
+//            private List<Minion> minions = new ArrayList<>();
+//        }
+//    }
 
 }

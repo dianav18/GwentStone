@@ -23,10 +23,10 @@ public class GetCardsOnTable {
 
         output.put("command", "getCardsOnTable");
 
-        for (List<CardInput> cardInputs : this.game.getCardsOnTable()) {
+        for (List<Minion> cardInputs : this.game.getCardsOnTable()) {
             ArrayNode tmp = objectMapper.createArrayNode();
 
-            for (CardInput minion : cardInputs) {
+            for (Minion minion : cardInputs) {
                 ObjectNode cardNode = objectMapper.createObjectNode();
                 cardNode.put("mana", minion.getMana());
                 cardNode.put("attackDamage", minion.getAttackDamage());
