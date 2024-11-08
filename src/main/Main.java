@@ -81,7 +81,8 @@ public final class Main {
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
+        //objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);
 
@@ -166,10 +167,34 @@ public final class Main {
                         int yAttacked = action.getCardAttacked().getY();
 
                         CardUsesAttack cardUsesAttackCommand = new CardUsesAttack(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
-                        ObjectNode node = cardUsesAttackCommand.executeAttack();
-                        if(!node.toString().equals("{}")){
-                            newNode = (node);
+                        ObjectNode cardUsesAttackNode = cardUsesAttackCommand.executeAttack();
+                        if(!cardUsesAttackNode.toString().equals("{}")){
+                            newNode = cardUsesAttackNode;
                         }
+                        break;
+                    case "cardUsesAbility":
+                        xAttacker = action.getCardAttacker().getX();
+                        yAttacker = action.getCardAttacker().getY();
+                        xAttacked = action.getCardAttacked().getX();
+                        yAttacked = action.getCardAttacked().getY();
+
+                        CardUsesAbility cardUsesAbilityCommand = new CardUsesAbility(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
+                        ObjectNode cardUsesAbilityNode = cardUsesAbilityCommand.executeAbility();
+                        if(!cardUsesAbilityNode.toString().equals("{}")){
+                            newNode = cardUsesAbilityNode;
+                        }
+                        break;
+                    case "useAttackHero":
+                        xAttacker = action.getCardAttacker().getX();
+                        yAttacker = action.getCardAttacker().getY();
+                        playerIdx = action.getPlayerIdx();
+
+                        UseAttackHero useAttackHeroCommand = new UseAttackHero(game, xAttacker, yAttacker, objectMapper);
+                        ObjectNode attackHeroNode = useAttackHeroCommand.executeAttackOnHero(output);
+
+//                        if (!attackHeroNode.toString().equals("{}")) {
+//                            output.add(attackHeroNode);
+//                        }
                         break;
                     default:
                         //System.out.println(command + " action not found");
@@ -181,26 +206,6 @@ public final class Main {
                 System.out.println(newNode);
                 printGameState(game); // TODO Remove
             }
-
-
-            /*
-             * TODO Implement your function here
-             *
-             * How to add output to the output array?
-             * There are multiple ways to do this, here is one example:
-             *
-             * ObjectMapper mapper = new ObjectMapper();
-             *
-             * ObjectNode objectNode = mapper.createObjectNode();
-             * objectNode.put("field_name", "field_value");
-             *
-             * ArrayNode arrayNode = mapper.createArrayNode();
-             * arrayNode.add(objectNode);
-             *
-             * output.add(arrayNode);
-             * output.add(objectNode);
-             *
-             */
 
             ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
             objectWriter.writeValue(new File(filePath2), output);

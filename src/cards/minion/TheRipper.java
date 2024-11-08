@@ -1,7 +1,9 @@
 package cards.minion;
 
 import fileio.CardInput;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class TheRipper extends Minion {
     public TheRipper(CardInput cardInput) {
         super(cardInput, false, Row.FRONT);
@@ -16,5 +18,9 @@ public class TheRipper extends Minion {
 
         enemyMinion.setAttackDamage(newAttackDamage);
 
+    }
+
+    protected Minion constructNew(){
+        return new TheRipper();
     }
 }

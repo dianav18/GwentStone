@@ -1,7 +1,9 @@
 package cards.minion;
 
 import fileio.CardInput;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class TheCursedOne extends Minion {
     public TheCursedOne(CardInput cardInput) {
         super(cardInput, false, Row.BACK);
@@ -16,5 +18,9 @@ public class TheCursedOne extends Minion {
             enemyMinion.setHealth(enemyMinion.getAttackDamage());
             enemyMinion.setAttackDamage(originalHealth);
         }
+    }
+
+    protected Minion constructNew(){
+        return new TheCursedOne();
     }
 }

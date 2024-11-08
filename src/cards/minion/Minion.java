@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Minion {
+public abstract class Minion {
     private int mana;
     private int health;
     private int attackDamage;
@@ -64,7 +64,7 @@ public class Minion {
     }
 
     public Minion copy(){
-        Minion copy = new Minion();
+        Minion copy = constructNew();
 
         copy.mana = this.mana;
         copy.health = this.health;
@@ -79,6 +79,8 @@ public class Minion {
 
         return copy;
     }
+
+    protected abstract Minion constructNew();
 
     public CardInput toInferior(){
 

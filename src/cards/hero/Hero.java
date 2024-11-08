@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Setter
 public class Hero extends Card {
     private int mana;
-    private final int health = 30;
+    private int health ;
     private String description;
     private ArrayList<String> colors;;
     private String name;
@@ -26,13 +26,14 @@ public class Hero extends Card {
         this.colors = cardInput.getColors();
         this.name = cardInput.getName();
         this.hasAttacked = false;
+        this.health = 30;
     }
 
     public boolean canUseAbility(int abilityHandCost) {
         return this.mana >= abilityHandCost;
     }
 
-   public void useAbility(int abilityHandCost) {
+    public void useAbility(int abilityHandCost) {
         this.mana -= abilityHandCost;
    }
 
