@@ -20,7 +20,7 @@ public class UseAttackHero {
     }
 
     public ObjectNode executeAttackOnHero(ArrayNode output) {
-//        game.useAttackHero(xAttacker, yAttacker, objectMapper, output);
+        game.useAttackHero(xAttacker, yAttacker, objectMapper, output);
 
         if (!output.isEmpty()) {
             return (ObjectNode) output.get(0);

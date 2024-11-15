@@ -425,17 +425,31 @@ public class Game {
         }
     }
 
-    /*
+
     public void useAttackHero(int xAttacker, int yAttacker, ObjectMapper objectMapper, ArrayNode output) {
+        System.out.println("useAttackHero");
+
         ObjectNode resultNode = objectMapper.createObjectNode();
         ObjectNode attackerCoordinates = objectMapper.createObjectNode();
 
         Minion attackerCard = board[xAttacker][yAttacker];
 
+        if (attackerCard == null) {
+            return;
+        }
+
         Hero enemyHero;
         if (xAttacker == 0 || xAttacker == 1) {
-            enemyHero = player1
+            enemyHero = player1.getHero();
+        } else {
+            enemyHero = player2.getHero();
         }
+
+        if (enemyHero == null) {
+            System.out.println("Enemy hero is not set.");
+            return;
+        }
+        System.out.println("Targeting enemy hero: " + enemyHero.getName());
 
         if (attackerCard.isFrozen()) {
             resultNode.put("command", "useAttackHero");
@@ -485,8 +499,9 @@ public class Game {
             return;
         }
 
-        enemyHero.setHealth(enemyHero.getHealth() - attackerCard.getAttackDamage());
-        attackerCard.setHasAttacked(true);
+//        enemyHero.setHealth(enemyHero.getHealth() - attackerCard.getAttackDamage());
+//        attackerCard.setHasAttacked(true);
+//        System.out.println("Enemy hero health after attack: " + enemyHero.getHealth());
 
 
         if (enemyHero.getHealth() <= 0) {
@@ -494,12 +509,16 @@ public class Game {
             if (getPlayerTurn() == player1) {
                 gameEndNode.put("gameEnded", "Player one killed the enemy hero.");
                 output.add(gameEndNode);
+                return;
             } else {
                 gameEndNode.put("gameEnded", "Player two killed the enemy hero.");
                 output.add(gameEndNode);
+                return;
             }
         }
+        enemyHero.setHealth(enemyHero.getHealth() - attackerCard.getAttackDamage());
+        attackerCard.setHasAttacked(true);
+        System.out.println("Enemy hero health after attack: " + enemyHero.getHealth());
     }
 
-     */
 }

@@ -17,6 +17,10 @@ public class Player {
     private List<Deck> decks;
     private Deck currentDeck;
     private Hand hand;
+@Setter
+@Getter
+    private Hero hero;
+
 //    private BoardSide boardSide = new BoardSide();
 
     private ActionsInput actionsInput;
@@ -29,13 +33,14 @@ public class Player {
     @Setter
     private int player2Idx;
 
-    public Player(int playerIdx, ArrayList<ArrayList<CardInput>> decks) {
+    public Player(int playerIdx, ArrayList<ArrayList<CardInput>> decks, CardInput heroInput) {
         this.playerIdx = playerIdx;
         this.decks = new ArrayList<>();
         for (ArrayList<CardInput> deck : decks) {
             this.decks.add(new Deck(deck));
         }
         this.mana = 0;
+        this.hero = new Hero(heroInput);
     }
 
     public void setup(){

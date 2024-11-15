@@ -88,10 +88,15 @@ public final class Main {
 
         ArrayNode output = objectMapper.createArrayNode();
 
-        Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks());
-        Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks());
+        //StartGameInput startGameInput = inputDataGame.getStartGame();
+
+//        Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks(), startGameInput.getPlayerOneHero());
+//        Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks(), startGameInput.getPlayerTwoHero());
 
         for (GameInput inputDataGame : inputData.getGames()) {
+            StartGameInput startGameInput = inputDataGame.getStartGame();
+            Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks(), startGameInput.getPlayerOneHero());
+            Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks(), startGameInput.getPlayerTwoHero());
             player1.setup();
             player2.setup();
             Game game = new Game(
@@ -102,7 +107,7 @@ public final class Main {
                     inputDataGame.getStartGame().getStartingPlayer()
             );
 
-            StartGameInput startGameInput = inputDataGame.getStartGame();
+            //StartGameInput startGameInput = inputDataGame.getStartGame();
 
             Hero playerOneHero = new Hero(startGameInput.getPlayerOneHero());
             Hero playerTwoHero = new Hero(startGameInput.getPlayerTwoHero());
@@ -136,7 +141,6 @@ public final class Main {
                         Player targetPlayer = (playerIndex == 1) ? player1 : player2;
                         GetCardsInHand getCardsInHandCommand = new GetCardsInHand(targetPlayer);
                         newNode = (getCardsInHandCommand.getCardsInHand(objectMapper));
-
                         break;
                     case "endPlayerTurn":
                         game.endTurn(); // TODO Move tgo class and call it
@@ -186,15 +190,17 @@ public final class Main {
                         break;
                     case "useAttackHero":
                         xAttacker = action.getCardAttacker().getX();
+                        System.out.println(xAttacker);
                         yAttacker = action.getCardAttacker().getY();
+                        System.out.println(yAttacker);
                         playerIdx = action.getPlayerIdx();
 
                         UseAttackHero useAttackHeroCommand = new UseAttackHero(game, xAttacker, yAttacker, objectMapper);
                         ObjectNode attackHeroNode = useAttackHeroCommand.executeAttackOnHero(output);
 
-//                        if (!attackHeroNode.toString().equals("{}")) {
-//                            output.add(attackHeroNode);
-//                        }
+                        if (!attackHeroNode.toString().equals("{}")) {
+                            newNode = attackHeroNode;
+                        }
                         break;
                     default:
                         //System.out.println(command + " action not found");

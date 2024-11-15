@@ -1,6 +1,7 @@
 package cards.hero;
 
 import cards.Card;
+import cards.minion.Minion;
 import fileio.CardInput;
 import lombok.Getter;
 import lombok.Setter;

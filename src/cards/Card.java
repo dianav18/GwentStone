@@ -2,8 +2,9 @@ package cards;
 
 import fileio.CardInput;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+@NoArgsConstructor
 public abstract class Card {
     @Getter
     private CardInput card;
