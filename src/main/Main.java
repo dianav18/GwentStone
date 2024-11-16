@@ -127,7 +127,6 @@ public final class Main {
             for (ActionsInput action : inputDataGame.getActions()) {
 
                 // System.out.println("ACTION: " + action);
-
                 String command = action.getCommand();
 
                 ObjectNode newNode = null;
@@ -230,6 +229,18 @@ public final class Main {
                     case "getFrozenCardsOnTable":
                         GetFrozenCardsOnTable frozenCardsCommand = new GetFrozenCardsOnTable(game);
                         newNode = frozenCardsCommand.getFrozenCards(objectMapper);
+                        break;
+                    case "getTotalGamesPlayed":
+                        GetTotalGamesPlayed getTotalGamesPlayedCommand = new GetTotalGamesPlayed(game);
+                        newNode = getTotalGamesPlayedCommand.getTotalGamesPlayed(objectMapper);
+                        break;
+                    case "getPlayerOneWins":
+                        GetPlayerOneWins getPlayerOneWinsCommand = new GetPlayerOneWins(game);
+                        newNode = getPlayerOneWinsCommand.getPlayerOneWins(objectMapper);
+                        break;
+                    case "getPlayerTwoWins":
+                        GetPlayerTwoWins getPlayerTwoWinsCommand = new GetPlayerTwoWins(game);
+                        newNode = getPlayerTwoWinsCommand.getPlayerTwoWins(objectMapper);
                         break;
                     default:
                         //System.out.println(command + " action not found");

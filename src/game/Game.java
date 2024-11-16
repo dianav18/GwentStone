@@ -9,6 +9,7 @@ import debug.PlaceCard;
 import fileio.ActionsInput;
 import fileio.CardInput;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,14 @@ public class Game {
     private Hero player1Hero;
     private Hero player2Hero;
 
+    private int endedGames = 0;
+    private int playerOneWins = 0;
+    private int playerTwoWins = 0;
+
+    @Getter
+    @Setter
+    private boolean gameEnded = false;
+
     public Game(Player player1, Player player2, int player1DeckIndex, int player2DeckIndex, long seed, int startingTurn, Hero player1Hero, Hero player2Hero) {
         this.player1 = player1;
         this.player2 = player2;
@@ -48,6 +57,9 @@ public class Game {
 
     public void nextRound() {
         //System.out.println("Advancing a round");
+        if (gameEnded) {
+            return;
+        }
         player1.nextRound(this.round);
         player2.nextRound(this.round);
 
@@ -66,6 +78,9 @@ public class Game {
     }
 
     public void endTurn() {
+        if (gameEnded) {
+            return;
+        }
         switch (this.turn){
             case 2:
                 for (Minion minion : board[0]) {
@@ -315,7 +330,13 @@ public class Game {
         attackerCard.setHasAttacked(true);
 
         if (attackedCard.getHealth() <= 0) {
-            board[yAttacked][xAttacked] = null;
+            board[xAttacked][yAttacked] = null;
+
+            for (int i = yAttacked; i < board[xAttacked].length - 1; i++) {
+                board[xAttacked][i] = board[xAttacked][i + 1];
+            }
+
+            board[xAttacked][board[xAttacked].length - 1] = null;
         }
         output.add(resultNode);
     }
@@ -435,6 +456,7 @@ public class Game {
     }
 
     public void useAttackHero(int xAttacker, int yAttacker, Hero attackedHero, ObjectMapper objectMapper, ArrayNode output) {
+
         ObjectNode resultNode = objectMapper.createObjectNode();
 
         Minion attackerCard = board[xAttacker][yAttacker];
@@ -465,7 +487,6 @@ public class Game {
         } else {
             enemyFrontRow = 2;
         }
-
         for (Minion minion : board[enemyFrontRow]) {
             if (minion != null && minion.isTank()) {
                 enemyHasTank = true;
@@ -486,10 +507,16 @@ public class Game {
         if (attackedHero.getHealth() <= 0) {
             ObjectNode gameEndNode = objectMapper.createObjectNode();
             if (getPlayerTurn() == player1) {
+                this.playerOneWins += 1;
+                this.endedGames += 1;
+                this.gameEnded = true;
                 gameEndNode.put("gameEnded", "Player one killed the enemy hero.");
                 output.add(gameEndNode);
                 return;
             } else {
+                this.playerTwoWins += 1;
+                this.endedGames += 1;
+                this.gameEnded = true;
                 gameEndNode.put("gameEnded", "Player two killed the enemy hero.");
                 output.add(gameEndNode);
                 return;
