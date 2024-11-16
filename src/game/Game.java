@@ -12,6 +12,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Getter
@@ -56,14 +57,46 @@ public class Game {
                     continue;
                 }
                 minion.setHasAttacked(false);
-                minion.setFrozen(false);
             }
         }
 
         this.round += 1;
+        player1Hero.setHasAttacked(false);
+        player2Hero.setHasAttacked(false);
     }
 
     public void endTurn() {
+        switch (this.turn){
+            case 2:
+                for (Minion minion : board[0]) {
+                    if(minion==null){
+                        continue;
+                    }
+                    minion.setFrozen(false);
+                }
+                for (Minion minion : board[1]) {
+                    if(minion==null){
+                        continue;
+                    }
+                    minion.setFrozen(false);
+                }
+                break;
+            case 1:
+                for (Minion minion : board[2]) {
+                    if(minion==null){
+                        continue;
+                    }
+                    minion.setFrozen(false);
+                }
+                for (Minion minion : board[3]) {
+                    if(minion==null){
+                        continue;
+                    }
+                    minion.setFrozen(false);
+                }
+                break;
+        }
+
         this.turn = getNextTurn();
 
         if (turn == startingTurn) {
@@ -474,7 +507,25 @@ public class Game {
         resultNode.put("command", "useAttackHero");
     }
 
-    public void useHeroAbility(int affectedRow, Hero hero, Player player, ObjectMapper objectMapper, ArrayNode output) {
+    public void useHeroAbility(int affectedRow, ObjectMapper objectMapper, ArrayNode output) {
+        System.out.println("Row before ability:");
+        for (Minion minion : board[affectedRow]) {
+            if (minion != null) {
+                System.out.println("Minion: " + minion.getName() + ", Frozen: " + minion.isFrozen());
+            }
+        }
+
+        Hero hero;
+        Player player;
+
+        if (getPlayerTurn() == player1) {
+            player = player1;
+            hero = player1Hero;
+        } else {
+            player = player2;
+            hero = player2Hero;
+        }
+
         ObjectNode resultNode = objectMapper.createObjectNode();
         if (player.getMana() < hero.getMana()) {
             resultNode.put("command", "useHeroAbility");
@@ -489,6 +540,7 @@ public class Game {
             resultNode.put("affectedRow", affectedRow);
             resultNode.put("error", "Hero has already attacked this turn.");
             output.add(resultNode);
+            return;
         }
 
         if (hero instanceof LordRoyce || hero instanceof EmpressThorina) {
@@ -500,40 +552,63 @@ public class Game {
                 return;
             }
 
-            if (hero instanceof LordRoyce) {
-                ((LordRoyce) hero).subZero(board, affectedRow);
-            } else {
-                ((EmpressThorina) hero).LowBlow(board, affectedRow);
+            switch (hero.getName()) {
+                case "Lord Royce":
+                    ((LordRoyce) hero).subZero(board, affectedRow);
+                    //System.out.println("inghetam");
+                    System.out.println("Row after ability:");
+                    for (Minion minion : board[affectedRow]) {
+                        if (minion != null) {
+                            System.out.println("Minion: " + minion.getName() + ", Frozen: " + minion.isFrozen());
+                        }
+                    }
+                    break;
+                case "Empress Thorina":
+                    ((EmpressThorina) hero).LowBlow(board, affectedRow);
+                    break;
             }
+            player.setMana(player.getMana() - hero.getMana());
+            hero.setHasAttacked(true);
         }
+
         if (hero instanceof GeneralKocioraw || hero instanceof KingMudface) {
-            if (!isCurrentPlayerRow(player, affectedRow)) {
+            if (!isPlayerRow(player, affectedRow)) {
+                //System.out.println("Selected row does not belong to the current player.");
+
                 resultNode.put("command", "useHeroAbility");
                 resultNode.put("affectedRow", affectedRow);
                 resultNode.put("error", "Selected row does not belong to the current player.");
+                output.add(resultNode);
                 return;
             }
-            if (hero instanceof GeneralKocioraw) {
-                ((GeneralKocioraw) hero).BloodThirst(board, affectedRow);
-            } else {
-                ((KingMudface) hero).EarthBorn(board, affectedRow);
+            switch (hero.getName()) {
+                case "General Kocioraw":
+                    ((GeneralKocioraw) hero).BloodThirst(board, affectedRow);
+                    break;
+                case "King Mudface":
+                    ((KingMudface) hero).EarthBorn(board, affectedRow);
+                    break;
             }
-        }
-        player.setMana(player.getMana() - hero.getMana());
-        hero.setHasAttacked(true);
-    }
-    private boolean isEnemyRow(Player currentPlayer, int row) {
-        if (currentPlayer.getPlayerIdx() == 1) {
-            return row == 0 || row == 1;
-        } else {
-            return row == 2 || row == 3;
+            player.setMana(player.getMana() - hero.getMana());
+            hero.setHasAttacked(true);
         }
     }
-    private boolean isCurrentPlayerRow(Player currentPlayer, int row) {
-        if (currentPlayer.getPlayerIdx() == 1) {
+
+    public boolean isEnemyRow(Player player, int row) {
+        if (player.getPlayerIdx() == 1) {
+            return row == 0 || row == 1;
+        } else if (player.getPlayerIdx() == 2) {
             return row == 2 || row == 3;
-        } else {
+        }
+        return false;
+    }
+
+    public boolean isPlayerRow(Player player, int row) {
+        if (player.getPlayerIdx() == 1) {
+            return row == 2 || row == 3;
+        } else if (player.getPlayerIdx() == 2) {
             return row == 0 || row == 1;
         }
+        return false;
     }
 }

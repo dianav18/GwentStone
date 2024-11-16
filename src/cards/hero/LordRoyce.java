@@ -2,6 +2,7 @@ package cards.hero;
 
 import fileio.CardInput;
 import cards.minion.Minion;
+import lombok.NoArgsConstructor;
 
 public class LordRoyce extends Hero {
 
@@ -14,7 +15,7 @@ public class LordRoyce extends Hero {
 
         for (Minion minion : row) {
             if (minion != null) {
-                minion.freeze();
+                minion.setFrozen(true);
             }
         }
     }

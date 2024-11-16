@@ -1,13 +1,8 @@
 package game;
 
 import fileio.StartGameInput;
-import fileio.CardInput;
 import cards.hero.Hero;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 
 public class StartGame {
     @Getter
@@ -32,8 +27,8 @@ public class StartGame {
         this.playerTwoDeckIdx = startGameInput.getPlayerTwoDeckIdx();
         this.shuffleSeed = startGameInput.getShuffleSeed();
 
-        this.playerOneHero = new Hero(startGameInput.getPlayerOneHero());
-        this.playerTwoHero = new Hero(startGameInput.getPlayerTwoHero());
+        this.playerOneHero = Hero.create(startGameInput.getPlayerOneHero());
+        this.playerTwoHero = Hero.create(startGameInput.getPlayerTwoHero());
 
         setDeckForPlayer(playerOne, playerOneDeckIdx, shuffleSeed);
         setDeckForPlayer(playerTwo, playerTwoDeckIdx, shuffleSeed);

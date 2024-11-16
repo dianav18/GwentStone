@@ -2,9 +2,9 @@ package cards.hero;
 
 import fileio.CardInput;
 import cards.minion.Minion;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 
 public class KingMudface extends Hero{
     public KingMudface(CardInput cardInput) {
@@ -12,10 +12,6 @@ public class KingMudface extends Hero{
     }
 
     public void EarthBorn(Minion[][] board, int rowIndex) {
-        if (rowIndex < 0 || rowIndex >= board.length) {
-            return;
-        }
-
         Minion[] row = board[rowIndex];
 
         for (Minion minion : row) {

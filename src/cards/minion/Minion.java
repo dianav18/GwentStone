@@ -40,6 +40,14 @@ public abstract class Minion {
         this.rowPosition = rowPosition;
     }
 
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
+
+    public boolean isFrozen() {
+        return frozen;
+    }
+
     public void freeze() {
         this.frozen = true;
     }

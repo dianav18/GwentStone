@@ -2,9 +2,9 @@ package cards.hero;
 
 import fileio.CardInput;
 import cards.minion.Minion;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 public class GeneralKocioraw extends Hero{
 
     public GeneralKocioraw(CardInput cardInput) {

@@ -98,8 +98,11 @@ public final class Main {
             Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks());
             Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks());
 
-            Hero playerOneHero = new Hero(startGameInput.getPlayerOneHero());
-            Hero playerTwoHero = new Hero(startGameInput.getPlayerTwoHero());
+            Hero playerOneHero = Hero.create(startGameInput.getPlayerOneHero());
+            Hero playerTwoHero = Hero.create(startGameInput.getPlayerTwoHero());
+
+            System.out.println(playerOneHero);
+            System.out.println(playerTwoHero);
 
 //            System.out.println(playerOneHero.getName());
 //            System.out.println(playerTwoHero.getName());
@@ -217,15 +220,16 @@ public final class Main {
                         break;
                     case "useHeroAbility":
                         int affectedRow = action.getAffectedRow();
-                        Hero currentHero = (game.getActivePlayerIndex() == 1) ? playerOneHero : playerTwoHero;
-                        Player currentPlayer = (game.getActivePlayerIndex() == 1) ? player1 : player2;
 
-                        UseHeroAbility useHeroAbilityCommand = new UseHeroAbility(game, currentHero, affectedRow, currentPlayer, objectMapper);
+                        UseHeroAbility useHeroAbilityCommand = new UseHeroAbility(game, affectedRow, objectMapper);
                         ObjectNode heroAbilityResult = useHeroAbilityCommand.executeAbility();
                         if (!heroAbilityResult.isEmpty()) {
-                            System.out.println("action");
                             newNode = heroAbilityResult;
                         }
+                        break;
+                    case "getFrozenCardsOnTable":
+                        GetFrozenCardsOnTable frozenCardsCommand = new GetFrozenCardsOnTable(game);
+                        newNode = frozenCardsCommand.getFrozenCards(objectMapper);
                         break;
                     default:
                         //System.out.println(command + " action not found");
@@ -322,3 +326,4 @@ public final class Main {
 //}
 
 // https://jsondiff.com/
+
