@@ -1,23 +1,33 @@
 package cards.hero;
 
-import cards.minion.Berserker;
 import fileio.CardInput;
 import cards.minion.Minion;
 
-import java.util.List;
-
-public class EmpressThorina extends Hero{
+public class EmpressThorina extends Hero {
     public EmpressThorina(CardInput cardInput) {
         super(cardInput);
     }
-    public void LowBlow(List<Minion> row) {
-        Minion enemyMinion = row.get(0);
+
+    public void LowBlow(Minion[][] board, int rowIndex) {
+        Minion[] row = board[rowIndex];
+        Minion targetMinion = null;
+
         for (Minion minion : row) {
-            if (minion.getHealth() > enemyMinion.getHealth()) {
-                enemyMinion = minion;
+            if (minion != null) {
+                if (targetMinion == null || minion.getHealth() > targetMinion.getHealth()) {
+                    targetMinion = minion;
+                }
             }
         }
-        enemyMinion.setHealth(0);
-        row.remove(enemyMinion); ////
+
+        if (targetMinion != null) {
+            targetMinion.setHealth(0);
+            for (int i = 0; i < row.length; i++) {
+                if (row[i] == targetMinion) {
+                    row[i] = null;
+                    break;
+                }
+            }
+        }
     }
 }

@@ -15,9 +15,8 @@ public class Hero extends Card {
     private int mana;
     private int health ;
     private String description;
-    private ArrayList<String> colors;;
+    private ArrayList<String> colors;
     private String name;
-
     private boolean hasAttacked;
 
     public Hero(CardInput cardInput) {
@@ -36,6 +35,10 @@ public class Hero extends Card {
 
     public void useAbility(int abilityHandCost) {
         this.mana -= abilityHandCost;
+   }
+
+   public boolean hasAttacked(){
+        return this.hasAttacked;
    }
 
 }

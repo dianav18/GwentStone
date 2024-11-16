@@ -11,9 +11,13 @@ public class GeneralKocioraw extends Hero{
         super(cardInput);
     }
 
-    public void BloodThirst(List<Minion> row) {
-        for (Minion myMinion : row) {
-            myMinion.setAttackDamage(myMinion.getAttackDamage() + 1);
+    public void BloodThirst(Minion[][] board, int rowIndex) {
+        Minion[] row = board[rowIndex];
+
+        for (Minion minion : row) {
+            if (minion != null) {
+                minion.setAttackDamage(minion.getAttackDamage() + 1);
+            }
         }
     }
 }

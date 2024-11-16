@@ -11,10 +11,17 @@ public class KingMudface extends Hero{
         super(cardInput);
     }
 
+    public void EarthBorn(Minion[][] board, int rowIndex) {
+        if (rowIndex < 0 || rowIndex >= board.length) {
+            return;
+        }
 
-    public void EarthBorn(List<Minion> row) {
-        for (Minion myMinion : row) {
-            myMinion.setHealth(myMinion.getHealth() + 1);
+        Minion[] row = board[rowIndex];
+
+        for (Minion minion : row) {
+            if (minion != null) {
+                minion.setHealth(minion.getHealth() + 1);
+            }
         }
     }
 }

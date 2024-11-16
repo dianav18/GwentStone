@@ -5,26 +5,27 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.Game;
 import cards.hero.Hero;
+import game.Player;
 
-public class UseAttackHero {
+public class UseHeroAbility {
     private final Game game;
-    private final int xAttacker;
-    private final int yAttacker;
-    private final Hero attackedHero;
+    private final Hero hero;
+    private final int affectedRow;
     private final ObjectMapper objectMapper;
+    private final Player currentPlayer;
 
-    public UseAttackHero(Game game, int xAttacker, int yAttacker, Hero attackedHero, ObjectMapper objectMapper) {
+    public UseHeroAbility(Game game, Hero hero, int affectedRow, Player currentPlayer, ObjectMapper objectMapper) {
         this.game = game;
-        this.xAttacker = xAttacker;
-        this.yAttacker = yAttacker;
-        this.attackedHero = attackedHero;
+        this.hero = hero;
+        this.affectedRow = affectedRow;
         this.objectMapper = objectMapper;
+        this.currentPlayer = currentPlayer;
     }
 
-    public ObjectNode executeAttack() {
+    public ObjectNode executeAbility() {
         ArrayNode output = objectMapper.createArrayNode();
 
-        game.useAttackHero(xAttacker, yAttacker, attackedHero, objectMapper, output);
+        game.useHeroAbility(affectedRow, hero, currentPlayer, objectMapper, output);
 
         if (!output.isEmpty()) {
             return (ObjectNode) output.get(0);

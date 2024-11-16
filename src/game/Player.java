@@ -33,19 +33,21 @@ public class Player {
     @Setter
     private int player2Idx;
 
-    public Player(int playerIdx, ArrayList<ArrayList<CardInput>> decks, CardInput heroInput) {
+    CardInput heroInput;
+
+    public Player(int playerIdx, ArrayList<ArrayList<CardInput>> decks) {
         this.playerIdx = playerIdx;
         this.decks = new ArrayList<>();
         for (ArrayList<CardInput> deck : decks) {
             this.decks.add(new Deck(deck));
         }
         this.mana = 0;
-        this.hero = new Hero(heroInput);
     }
 
     public void setup(){
         this.hand = new Hand();
         this.mana = 0;
+        //this.hero = new Hero(heroInput);
         // TODO and mana etc
     }
 
