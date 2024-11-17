@@ -1,12 +1,13 @@
 package org.poo.game;
 
-import org.poo.cards.hero.*;
-import org.poo.cards.minion.*;
+import org.poo.cards.hero.Hero;
+import org.poo.cards.minion.Minion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.actions.PlaceCard;
 import lombok.Getter;
+import org.poo.cards.minion.Row;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,8 @@ public class Game {
      * @param yAttacker            The column position of the attacker card.
      * @param objectMapper         The ObjectMapper used for creating JSON objects.
      * @param attackerCardDetails  The ObjectNode to store details about the attacker card.
-     * @param resultNode           The ObjectNode to store the complete result, including attacker and attacked card details.
+     * @param resultNode           The ObjectNode to store the complete result, including
+     *                             attacker and attacked card details.
      */
 
     private static void cardUsesAttackOutput(final int xAttacked, final int yAttacked,
@@ -196,10 +198,11 @@ public class Game {
 
     /**
      * Places a card from the player's hand onto the table.
-     * <p>
-     * This method attempts to place a card from the player's hand onto the appropriate row of the table,
-     * based on the card's row position and the game rules. It validates conditions such as sufficient mana
-     * and available space on the row. If any condition is not met, an error is added to the output.
+     * This method attempts to place a card from the player's hand onto the appropriate
+     * row of the table, based on the card's row position and the game rules. It
+     * validates conditions such as sufficient mana
+     * and available space on the row. If any condition is not met, an error is added
+     * to the output.
      *
      * @param cardIndex    The index of the card in the player's hand to be placed on the table.
      * @param objectMapper The ObjectMapper used for creating JSON error messages.
@@ -255,7 +258,9 @@ public class Game {
      * This method iterates through the game board and collects all the non-null cards
      * from each row. The cards are grouped into lists corresponding to each row on the table.
      *
-     * @return A list of lists, where each inner list represents a row of cards on the table.         Each inner list contains the Minion objects currently present on that row.         Empty rows will be represented by empty lists.
+     * @return A list of lists, where each inner list represents a row of cards on the table.
+     * Each inner list contains the Minion objects currently present on that row.
+     * Empty rows will be represented by empty lists.
      */
     public List<List<Minion>> getCardsOnTable() {
         final List<List<Minion>> cardsOnTable = new ArrayList<>();
@@ -275,13 +280,15 @@ public class Game {
     /**
      * Retrieves the card located at a specific position on the game board.
      * This method checks the specified position on the game board to determine if a card exists
-     * there. If a card is found, its details (mana, attack damage, health, description, colors, and name)
+     * there. If a card is found, its details (mana, attack damage, health, description,
+     * colors, and name)
      * are added to the output. If no card is found, an appropriate message is added instead.
      *
      * @param x            The row index of the card's position on the board (0-based).
      * @param y            The column index of the card's position on the board (0-based).
      * @param objectMapper The ObjectMapper used for creating JSON objects.
-     * @param output       The ArrayNode where the result (card details or an error message)                     will be appended.
+     * @param output       The ArrayNode where the result (card details or an error message)
+     *                     will be appended.
      */
     public void getCardAtPosition(final int x, final int y,
                                   final ObjectMapper objectMapper,
@@ -456,14 +463,16 @@ public class Game {
             return;
         }
 
-        attackerCard.useAbility( xAttacked, yAttacked,xAttacker,  yAttacker,objectMapper,output, this, resultNode);
+        attackerCard.useAbility(xAttacked, yAttacked, xAttacker,
+                yAttacker,objectMapper, output, this, resultNode);
 
     }
 
     /**
      * Handles the general error output format for cardUsesAbility.
      * @param xAttacked    the x-coordinate (row index) of the card being targeted by the ability.
-     * @param yAttacked    the y-coordinate (column index) of the card being targeted by the ability.
+     * @param yAttacked    the y-coordinate (column index) of the card being targeted by
+     *                     the ability.
      * @param xAttacker    the x-coordinate (row index) of the card using the ability.
      * @param yAttacker    the y-coordinate (column index) of the card using the ability.
      * @param objectMapper the ObjectMapper used for creating JSON objects.

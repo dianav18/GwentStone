@@ -27,7 +27,11 @@ public final class GetFrozenCardsOnTable {
      * Retrieves all frozen cards from the game table.
      *
      * @param objectMapper the ObjectMapper used for JSON serialization.
-     * @return an ObjectNode containing the details of all frozen cards. The structure includes: - "command": the name of the command executed ("getFrozenCardsOnTable"). - "output": an ArrayNode of frozen cards, where each card includes its  mana,             attack damage, health, description, colors, and name.
+     * @return an ObjectNode containing the details of all frozen cards.
+     * The structure includes: -
+     * "command": the name of the command executed ("getFrozenCardsOnTable").
+     * - "output": an ArrayNode of frozen cards, where each card includes its  mana,
+     * attack damage, health, description, colors, and name.
      */
     public ObjectNode getFrozenCards(final ObjectMapper objectMapper) {
         final ObjectNode resultNode = objectMapper.createObjectNode();

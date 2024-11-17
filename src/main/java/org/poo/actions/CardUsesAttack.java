@@ -40,7 +40,8 @@ public final class CardUsesAttack {
     /**
      * Executes the attack of a card in the game.
      *
-     * @return an ObjectNode representing the result of the ability execution, including any error messages or outcomes.
+     * @return an ObjectNode representing the result of the ability execution,
+     * including any error messages or outcomes.
      */
     public ObjectNode executeAttack() {
         final ArrayNode output = objectMapper.createArrayNode();

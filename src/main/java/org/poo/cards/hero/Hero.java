@@ -45,7 +45,8 @@ public abstract class Hero extends Card {
     /**
      * Constructor for initializing a Hero object based on the provided card input.
      *
-     * @param input the input containing the hero's attributes such as mana, description, colors, and name
+     * @param input the input containing the hero's attributes such as mana,
+     *              description, colors, and name
      * @return the hero
      */
     public static Hero create(final CardInput input) {
@@ -82,6 +83,7 @@ public abstract class Hero extends Card {
      * @param resultNode  the result node
      * @param output      the output
      */
-    public abstract void useAbility(Game game, Player player, final int affectedRow, ObjectNode resultNode, final ArrayNode output);
+    public abstract void useAbility(Game game, Player player, int affectedRow,
+                                    ObjectNode resultNode, ArrayNode output);
 
 }

@@ -10,7 +10,7 @@ import org.poo.game.Player;
 /**
  * The type King mudface.
  */
-public class KingMudface extends Hero {
+public final class KingMudface extends Hero {
     /**
      * Instantiates a new King mudface.
      *
@@ -20,23 +20,16 @@ public class KingMudface extends Hero {
         super(cardInput);
     }
 
-
     /**
-     * Executes the EarthBorn ability, which increments the health by one for all cards
-     * on the specified row.
+     * Executes the hero's ability on a specific row of the player's board.
+     * The ability increases the health of all minions in the specified row by 1.
      *
-     * @param board    the game board
-     * @param rowIndex the index of the targeted row
+     * @param game       the current game instance, providing access to the game state.
+     * @param player     the player using the hero's ability.
+     * @param affectedRow the index of the row affected by the hero's ability.
+     * @param resultNode  the result node for storing output details about the operation.
+     * @param output      the output array for storing command results.
      */
-    public static void earthBorn(final Minion[][] board, final int rowIndex) {
-        final Minion[] row = board[rowIndex];
-
-        for (final Minion minion : row) {
-            if (minion != null) {
-                minion.setHealth(minion.getHealth() + 1);
-            }
-        }
-    }
 
     public void useAbility(final Game game, final Player player, final int affectedRow,
                            final ObjectNode resultNode, final ArrayNode output) {

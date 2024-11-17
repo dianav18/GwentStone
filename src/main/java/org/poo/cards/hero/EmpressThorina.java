@@ -10,7 +10,7 @@ import org.poo.game.Player;
 /**
  * The type Empress thorina.
  */
-public class EmpressThorina extends Hero {
+public final class EmpressThorina extends Hero {
     /**
      * Instantiates a new Empress thorina.
      *
@@ -20,7 +20,21 @@ public class EmpressThorina extends Hero {
         super(cardInput);
     }
 
-    public void useAbility(final Game game, final Player player, final int affectedRow, final ObjectNode resultNode, final ArrayNode output){
+    /**
+     * Executes the hero's ability on a specific row of the enemy board. The ability targets the
+     * minion with the highest health in the specified row, setting its health to 0 and removing
+     * it from the board by shifting subsequent minions to the left.
+     *
+     * @param game       the current game instance, providing access to the game state.
+     * @param player     the player using the hero ability.
+     * @param affectedRow the index of the row affected by the hero's ability.
+     * @param resultNode  the result node for storing output details about the operation.
+     * @param output      the output array for storing command results.
+     */
+
+    public void useAbility(final Game game, final Player player,
+                           final int affectedRow, final ObjectNode resultNode,
+                           final ArrayNode output) {
         if (!game.isEnemyRow(player, affectedRow)) {
             resultNode.put("command", "useHeroAbility");
             resultNode.put("affectedRow", affectedRow);

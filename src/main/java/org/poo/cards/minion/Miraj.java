@@ -31,9 +31,10 @@ public final class Miraj extends Minion {
     protected void internalUseAbility(final int xAttacked, final int yAttacked,
                                       final int xAttacker, final int yAttacker,
                                       final ObjectMapper objectMapper,
-                                      final ArrayNode output, final Game game, final ObjectNode resultNode,
+                                      final ArrayNode output, final Game game,
+                                      final ObjectNode resultNode,
                                       final Minion attackedCard
-    ){
+    ) {
         final int originalHealth = this.getHealth();
         this.setHealth(attackedCard.getHealth());
         attackedCard.setHealth(originalHealth);

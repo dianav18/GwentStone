@@ -166,15 +166,18 @@ public abstract class Minion {
     public void useAbility(final int xAttacked, final int yAttacked,
                                     final int xAttacker, final int yAttacker,
                                     final ObjectMapper objectMapper,
-                                    final ArrayNode output, final Game game, final ObjectNode resultNode){
+                                    final ArrayNode output, final Game game,
+                                    final ObjectNode resultNode) {
         final Minion attackerCard = game.getBoard()[xAttacker][yAttacker];
         final Minion attackedCard = game.getBoard()[xAttacked][yAttacked];
 
         int isAttackedCardEnemy = 0;
+        final int backRowEnemy = 3;
 
         if (game.getPlayerTurn() == game.getPlayer1() && (xAttacked == 0 || xAttacked == 1)) {
             isAttackedCardEnemy = 1;
-        } else if (game.getPlayerTurn() == game.getPlayer2() && (xAttacked == 2 || xAttacked == 3)) {
+        } else if (game.getPlayerTurn() == game.getPlayer2() && (
+                xAttacked == 2 || xAttacked == backRowEnemy)) {
             isAttackedCardEnemy = 1;
         }
         if (isAttackedCardEnemy == 0) {
@@ -209,7 +212,8 @@ public abstract class Minion {
             return;
         }
 
-        internalUseAbility(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, output, game, resultNode, attackedCard);
+        internalUseAbility(xAttacked, yAttacked, xAttacker, yAttacker,
+                objectMapper, output, game, resultNode, attackedCard);
 
         attackerCard.setHasAttacked(true);
     }
@@ -227,10 +231,10 @@ public abstract class Minion {
      * @param resultNode   the result node
      * @param attackedCard the attacked card
      */
-    protected abstract void internalUseAbility(final int xAttacked, final int yAttacked,
-                                    final int xAttacker, final int yAttacker,
-                                    final ObjectMapper objectMapper,
-                                               final ArrayNode output, final Game game, final ObjectNode resultNode,
+    protected abstract void internalUseAbility(int xAttacked, int yAttacked,
+                                    int xAttacker, int yAttacker,
+                                    ObjectMapper objectMapper,
+                                               ArrayNode output, Game game,  ObjectNode resultNode,
                                                Minion attackedCard
                                                );
 

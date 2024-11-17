@@ -1,6 +1,15 @@
 package org.poo.game;
 
-import org.poo.cards.minion.*;
+import org.poo.cards.minion.Disciple;
+import org.poo.cards.minion.Miraj;
+import org.poo.cards.minion.Sentinel;
+import org.poo.cards.minion.Warden;
+import org.poo.cards.minion.TheCursedOne;
+import org.poo.cards.minion.TheRipper;
+import org.poo.cards.minion.Berserker;
+import org.poo.cards.minion.Goliath;
+import org.poo.cards.minion.Minion;
+
 import org.poo.fileio.CardInput;
 import lombok.Getter;
 

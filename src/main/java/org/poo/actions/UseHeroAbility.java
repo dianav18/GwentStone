@@ -20,7 +20,8 @@ public class UseHeroAbility {
      * @param affectedRow  the affected row
      * @param objectMapper the object mapper
      */
-    public UseHeroAbility(final Game game, final int affectedRow, final ObjectMapper objectMapper) {
+    public UseHeroAbility(final Game game, final int affectedRow,
+                          final ObjectMapper objectMapper) {
         this.game = game;
         this.affectedRow = affectedRow;
         this.objectMapper = objectMapper;

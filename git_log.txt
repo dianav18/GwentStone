@@ -1,0 +1,107 @@
+commit b8779697035d4b4defe7b471b85731f55e6ea635
+Author: root <root@Jarvis>
+Date:   Sun Nov 17 23:12:50 2024 +0200
+
+    moved to maven
+
+commit baed4663fe4cca0c35141cc871fc2678ff65c48d
+Author: root <root@Jarvis>
+Date:   Sun Nov 17 22:33:40 2024 +0200
+
+    removed instanceof
+
+commit 7b7cec8e00b34f77e6bfa618523b4a348f821806
+Author: root <root@Jarvis>
+Date:   Sun Nov 17 20:37:48 2024 +0200
+
+    checkstyle done
+
+commit 45b1308f3480f1fb14523d3dc37c308fa04840ef
+Author: root <root@Jarvis>
+Date:   Sun Nov 17 18:55:11 2024 +0200
+
+    multigames implemented
+
+commit c367d2f255a3c318bb39cd00026c455fbd0291fe
+Author: root <root@Jarvis>
+Date:   Sun Nov 17 00:06:55 2024 +0200
+
+    big game, but still working on multiple_games
+
+commit 64ea7007a91fdc707d1586383c15897537d02b7b
+Author: root <root@Jarvis>
+Date:   Sat Nov 16 19:44:25 2024 +0200
+
+    useHeroAbility
+
+commit 23deaf3d8d4183eaa4a40e6ce05b20d73a6dbb05
+Author: root <root@Jarvis>
+Date:   Sat Nov 16 13:59:14 2024 +0200
+
+    useAttackHero has been implemented
+
+commit 6a45c52919f97e46916c31f26d0f5fdc58727fe4
+Author: root <root@Jarvis>
+Date:   Fri Nov 15 17:00:32 2024 +0200
+
+    safety commit
+
+commit 61f624ae0603ecd7c150f61393b9609c538c964d
+Author: root <root@Jarvis>
+Date:   Fri Nov 8 22:15:49 2024 +0200
+
+    i have implemented useCardAbility
+
+commit 22804b1ae52828a760ca73122c0a4e87af39d806
+Author: root <root@Jarvis>
+Date:   Fri Nov 8 15:15:22 2024 +0200
+
+    i have implemented attack card
+
+commit 33c1115e74e5bf40c4d67b024703c71cbacd817d
+Author: root <root@Jarvis>
+Date:   Thu Nov 7 17:31:28 2024 +0200
+
+    place card invalid command has been implemented
+
+commit 2fe48532693e4310323e4880600c19d0442087b7
+Author: Diana <dianavulpoi3@gmail.com>
+Date:   Tue Nov 5 23:04:01 2024 +0200
+
+    game start completed
+
+commit 574b6dbd5b8b22ad9c95a244953de2c793501ffe
+Author: root <root@Jarvis>
+Date:   Tue Nov 5 21:34:57 2024 +0200
+
+    i have implemented GetPlayerHero
+
+commit adbb71570838f15f6a23136f1cb7aa3f644f5ad0
+Author: root <root@Jarvis>
+Date:   Mon Nov 4 21:16:31 2024 +0200
+
+    i have implemented getPlayerHero
+
+commit fe7dcdb0b84e1fc6b7c181bf3b99b4dcd3a95017
+Author: root <root@Jarvis>
+Date:   Sun Nov 3 23:12:00 2024 +0200
+
+    trying to figure out the good ierarchy
+
+commit b7a01eaf688b54cb5600a774bbc44e51ce1e9856
+Author: root <root@Jarvis>
+Date:   Sun Nov 3 10:07:30 2024 +0200
+
+    frontrow, backrow implementation
+
+commit 4108c69b57aff893a191ce6c4cbfe98b5b421a83
+Author: root <root@Jarvis>
+Date:   Fri Nov 1 17:51:47 2024 +0200
+
+    test
+
+commit 1612af7630c42a7ac3fe643a97f6396cd3e71c89
+Author: root <root@Jarvis>
+Date:   Fri Nov 1 17:29:50 2024 +0200
+
+    testing commit

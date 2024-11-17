@@ -39,15 +39,19 @@ import lombok.NoArgsConstructor;
     public void useAbility(final int xAttacked, final int yAttacked,
                            final int xAttacker, final int yAttacker,
                            final ObjectMapper objectMapper,
-                           final ArrayNode output, final Game game, final ObjectNode resultNode){
+                           final ArrayNode output, final Game game, final ObjectNode resultNode) {
+        final int playerOneBackRow = 3;
+
         final Minion attackerCard = game.getBoard()[xAttacker][yAttacker];
         final Minion attackedCard = game.getBoard()[xAttacked][yAttacked];
 
         boolean isAttackedCardAlly = false;
 
-        if (game.getPlayerTurn() == game.getPlayer1() && (xAttacked == 2 || xAttacked == 3)) {
+        if (game.getPlayerTurn() == game.getPlayer1() && (xAttacked == 2
+                || xAttacked == playerOneBackRow)) {
             isAttackedCardAlly = true;
-        } else if (game.getPlayerTurn() == game.getPlayer2() && (xAttacked == 0 || xAttacked == 1)) {
+        } else if (game.getPlayerTurn() == game.getPlayer2() && (
+                xAttacked == 0 || xAttacked == 1)) {
             isAttackedCardAlly = true;
         }
 
@@ -67,8 +71,8 @@ import lombok.NoArgsConstructor;
     protected void internalUseAbility(final int xAttacked, final int yAttacked,
                                       final int xAttacker, final int yAttacker,
                                       final ObjectMapper objectMapper,
-                                      final ArrayNode output, final Game game, final ObjectNode resultNode,
-                                      final Minion attackerCard){
-        // Not needed
+                                      final ArrayNode output, final Game game,
+                                      final ObjectNode resultNode,
+                                      final Minion attackerCard) {
     }
 }

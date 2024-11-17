@@ -10,7 +10,7 @@ import org.poo.game.Player;
 /**
  * The type General kocioraw.
  */
-public class GeneralKocioraw extends Hero {
+public final class GeneralKocioraw extends Hero {
 
     /**
      * Instantiates a new General kocioraw.
@@ -22,23 +22,20 @@ public class GeneralKocioraw extends Hero {
     }
 
     /**
-     * Executes the BloodThirst ability, which increments the attack by one for all cards
-     * on the specified row.
+     * Executes the hero's ability on a specific row of the player's board.
+     * The ability increases the attack damage of all minions in the specified row by 1.
      *
-     * @param board    the game board
-     * @param rowIndex the index of the targeted row
+     * @param game       the current game instance, providing access to the game state.
+     * @param player     the player using the hero ability.
+     * @param affectedRow the index of the row affected by the hero's ability.
+     * @param resultNode  the result node for storing output details about the operation.
+     * @param output      the output array for storing command results.
      */
-    public static void bloodThirst(final Minion[][] board, final int rowIndex) {
-        final Minion[] row = board[rowIndex];
 
-        for (final Minion minion : row) {
-            if (minion != null) {
-                minion.setAttackDamage(minion.getAttackDamage() + 1);
-            }
-        }
-    }
 
-    public void useAbility(final Game game, final Player player, final int affectedRow, final ObjectNode resultNode, final ArrayNode output){
+    public void useAbility(final Game game, final Player player,
+                           final int affectedRow, final ObjectNode resultNode,
+                           final ArrayNode output) {
         if (!game.isPlayerRow(player, affectedRow)) {
             resultNode.put("command", "useHeroAbility");
             resultNode.put("affectedRow", affectedRow);
