@@ -8,30 +8,44 @@ import game.Player;
 
 import java.util.List;
 
-public class GetCardsInHand {
+/**
+ * Handles the retrieval of cards in a player's hand.
+ */
+public final class GetCardsInHand {
     private final Player player;
 
-    public GetCardsInHand(Player player) {
+    /**
+     * Constructs a new GetCardsInHand instance.
+     *
+     * @param player the player whose hand is to be queried.
+     */
+    public GetCardsInHand(final Player player) {
         this.player = player;
     }
 
-    public ObjectNode getCardsInHand(ObjectMapper objectMapper) {
-        ObjectNode output = objectMapper.createObjectNode();
+    /**
+     * Retrieves the details of all cards in the player's hand.
+     *
+     * @param objectMapper the ObjectMapper used for creating JSON nodes.
+     * @return an ObjectNode containing details of all cards in the player's hand. The structure includes the card's mana, attack damage, health, description, colors, and name.
+     */
+    public ObjectNode getCardsInHand(final ObjectMapper objectMapper) {
+        final ObjectNode output = objectMapper.createObjectNode();
         output.put("command", "getCardsInHand");
         output.put("playerIdx", player.getPlayerIdx());
 
-        ArrayNode cardsArray = objectMapper.createArrayNode();
-        List<Minion> minions = player.getHand().getMinions();
+        final ArrayNode cardsArray = objectMapper.createArrayNode();
+        final List<Minion> minions = player.getHand().getMinions();
 
-        for (Minion minion : minions) {
-            ObjectNode cardNode = objectMapper.createObjectNode();
+        for (final Minion minion : minions) {
+            final ObjectNode cardNode = objectMapper.createObjectNode();
             cardNode.put("mana", minion.getMana());
             cardNode.put("attackDamage", minion.getAttackDamage());
             cardNode.put("health", minion.getHealth());
             cardNode.put("description", minion.getDescription());
 
-            ArrayNode colorsArray = objectMapper.createArrayNode();
-            for (String color : minion.getColors()) {
+            final ArrayNode colorsArray = objectMapper.createArrayNode();
+            for (final String color : minion.getColors()) {
                 colorsArray.add(color);
             }
             cardNode.set("colors", colorsArray);

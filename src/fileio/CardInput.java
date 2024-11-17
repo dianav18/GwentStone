@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * The type Card input.
+ */
 @AllArgsConstructor
 @Getter
 @Setter
@@ -17,6 +20,9 @@ public final class CardInput {
     private ArrayList<String> colors;
     private String name;
 
+    /**
+     * Instantiates a new Card input.
+     */
     public CardInput() {
     }
 

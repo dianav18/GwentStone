@@ -1,6 +1,5 @@
 package cards.minion;
 
-import cards.Card;
 import delete_me.MessageBuilder;
 import fileio.CardInput;
 import lombok.Getter;
@@ -9,6 +8,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a Minion card in the game with various attributes and behaviors.
+ */
 @Setter
 @Getter
 @NoArgsConstructor
@@ -27,7 +29,14 @@ public abstract class Minion {
 
     private boolean isTank;
 
-    public Minion(CardInput cardInput, boolean isTank, Row rowPosition) {
+    /**
+     * Constructs a Minion with the given parameters.
+     *
+     * @param cardInput   the card's input data.
+     * @param isTank      whether the minion is a tank.
+     * @param rowPosition the row position where the minion can be placed.
+     */
+    public Minion(final CardInput cardInput, final boolean isTank, final Row rowPosition) {
         this.mana = cardInput.getMana();
         this.health = cardInput.getHealth();
         this.attackDamage = cardInput.getAttackDamage();
@@ -40,39 +49,58 @@ public abstract class Minion {
         this.rowPosition = rowPosition;
     }
 
-    public void setFrozen(boolean frozen) {
-        this.frozen = frozen;
-    }
-
-    public boolean isFrozen() {
-        return frozen;
-    }
-
+    /**
+     * Freezes the minion, preventing it from attacking.
+     */
     public void freeze() {
         this.frozen = true;
     }
 
+    /**
+     * Unfreezes the minion, allowing it to attack.
+     */
     public void unfreeze() {
         this.frozen = false;
     }
 
-    public void takeDamage(int damage) {
+    /**
+     * Reduces the minion's health by the given damage amount.
+     *
+     * @param damage the damage to deal to the minion.
+     */
+    public void takeDamage(final int damage) {
         this.health -= damage;
         if (this.health < 0) {
             this.health = 0;
         }
     }
 
+    /**
+     * Checks if the minion can attack.
+     *
+     * @return true if the minion can attack, false otherwise.
+     */
     public boolean canAttack() {
         return !hasAttacked && !frozen;
     }
 
-    public boolean canUseAbility(int abilityHandCost) {
+    /**
+     * Checks if the minion can use its ability.
+     *
+     * @param abilityHandCost the mana cost of the ability.
+     * @return true if the minion has enough mana to use its ability, false otherwise.
+     */
+    public boolean canUseAbility(final int abilityHandCost) {
         return this.mana >= abilityHandCost;
     }
 
-    public Minion copy(){
-        Minion copy = constructNew();
+    /**
+     * Creates a copy of this minion.
+     *
+     * @return a new Minion object with the same attributes.
+     */
+    public Minion copy() {
+        final Minion copy = constructNew();
 
         copy.mana = this.mana;
         copy.health = this.health;
@@ -88,10 +116,19 @@ public abstract class Minion {
         return copy;
     }
 
+    /**
+     * Constructs a new instance of the specific Minion subclass.
+     *
+     * @return a new Minion object.
+     */
     protected abstract Minion constructNew();
 
-    public CardInput toInferior(){
-
+    /**
+     * Converts this minion into a simpler {@link CardInput} object.
+     *
+     * @return the converted CardInput object.
+     */
+    public CardInput toInferior() {
         return new CardInput(
                 this.mana,
                 this.attackDamage,
@@ -102,13 +139,24 @@ public abstract class Minion {
         );
     }
 
+    /**
+     * Checks if the minion has attacked in the current turn.
+     *
+     * @return true if the minion has attacked, false otherwise.
+     */
     public boolean hasAttacked() {
         return this.hasAttacked;
     }
 
+    /**
+     * Returns a string representation of the minion.
+     *
+     * @return a string containing the minion's details.
+     */
     @Override
     public String toString() {
-        return new MessageBuilder("{name}(H{health} A{attack} M{mana} H_A={has_attacked} F={frozen})")
+        return new MessageBuilder("{name}(H{health} A{attack} M{mana}"
+                + "H_A={has_attacked} F={frozen})")
                 .parse("name", this.name)
                 .parse("attack", this.attackDamage)
                 .parse("health", this.health)

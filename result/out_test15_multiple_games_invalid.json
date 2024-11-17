@@ -802,11 +802,11 @@
   "output" : [ ]
 }, {
   "command" : "getTotalGamesPlayed",
-  "output" : 1
+  "output" : 2
 }, {
   "command" : "getPlayerTwoWins",
   "output" : 1
 }, {
   "command" : "getPlayerOneWins",
-  "output" : 0
+  "output" : 1
 } ]

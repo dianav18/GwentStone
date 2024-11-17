@@ -7,54 +7,105 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * The type Generic message builder.
+ *
+ * @param <T> the type parameter
+ */
 public abstract class GenericMessageBuilder<T> {
 
+    /**
+     * The Base.
+     */
     @Getter
     protected T base;
+    /**
+     * The Placeholders.
+     */
     protected List<Object> placeholders = new ArrayList<>();
+    /**
+     * The Values.
+     */
     protected List<Object> values = new ArrayList<>();
 
 
-    public GenericMessageBuilder(T base) {
+    /**
+     * Instantiates a new Generic message builder.
+     *
+     * @param base the base
+     */
+    public GenericMessageBuilder(final T base) {
         this.base = base;
     }
 
-    protected GenericMessageBuilder(T base, List<Object> placeholders, List<Object> values) {
+    /**
+     * Instantiates a new Generic message builder.
+     *
+     * @param base         the base
+     * @param placeholders the placeholders
+     * @param values       the values
+     */
+    protected GenericMessageBuilder(final T base, final List<Object> placeholders, final List<Object> values) {
         this.base = base;
         this.placeholders = placeholders;
         this.values = values;
     }
 
-    public GenericMessageBuilder<T> parse(Map<?, ?> placeholders) {
+    /**
+     * Parse generic message builder.
+     *
+     * @param placeholders the placeholders
+     * @return the generic message builder
+     */
+    public GenericMessageBuilder<T> parse(final Map<?, ?> placeholders) {
         GenericMessageBuilder<T> working = this;
-        for (Object placeholder : placeholders.keySet()) {
-            String value = placeholders.get(placeholder).toString();
+        for (final Object placeholder : placeholders.keySet()) {
+            final String value = placeholders.get(placeholder).toString();
             working = working.parse(placeholder, value);
         }
         return working;
     }
 
-    public GenericMessageBuilder<T> replace(Object placeholder, Object value) {
+    /**
+     * Replace generic message builder.
+     *
+     * @param placeholder the placeholder
+     * @param value       the value
+     * @return the generic message builder
+     */
+    public GenericMessageBuilder<T> replace(final Object placeholder, final Object value) {
         return parse(placeholder, value);
     }
 
-    public GenericMessageBuilder<T> parse(Object placeholder, Object value) {
-        GenericMessageBuilder<T> working = clone();
+    /**
+     * Parse generic message builder.
+     *
+     * @param placeholder the placeholder
+     * @param value       the value
+     * @return the generic message builder
+     */
+    public GenericMessageBuilder<T> parse(final Object placeholder, final Object value) {
+        final GenericMessageBuilder<T> working = clone();
 
         working.placeholders.add(placeholder);
         working.values.add(value);
         return working;
     }
 
+    /**
+     * Parse t.
+     *
+     * @return the t
+     */
     public T parse() {
         T parsed = base;
 
         for (int i = 0; i < Math.min(placeholders.size(), values.size()); i++) {
             String placeholder = null;
-            Object placeholderObj = placeholders.get(i);
+            final Object placeholderObj = placeholders.get(i);
 
             String value = "null";
-            Object valueObj = values.get(i);
+            final Object valueObj = values.get(i);
 
             if (placeholderObj != null) {
                 placeholder = placeholderObj.toString();
@@ -94,9 +145,16 @@ public abstract class GenericMessageBuilder<T> {
     @SuppressWarnings("unused")
     protected abstract boolean equals(T o1, T o2);
 
+    /**
+     * Convert to string string.
+     *
+     * @return the string
+     */
     protected abstract String convertToString();
 
     /**
+     * Parse placeholder t.
+     *
      * @param base        the base where to parse into
      * @param placeholder The placeholder to parse. Already has the identifier with % at beginning and end
      * @param value       The value to parse the placeholder with

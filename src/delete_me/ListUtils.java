@@ -7,13 +7,33 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+/**
+ * The type List utils.
+ */
 public class ListUtils {
 
-    public static <T> String toString(List<T> list, ReturnArgLambdaExecutor<String, T> toString) {
+    /**
+     * To string string.
+     *
+     * @param <T>      the type parameter
+     * @param list     the list
+     * @param toString the to string
+     * @return the string
+     */
+    public static <T> String toString(final List<T> list, final ReturnArgLambdaExecutor<String, T> toString) {
         return toString(list, toString, s -> s);
     }
 
-    public static <T> String toString(List<T> list, ReturnArgLambdaExecutor<String, T> toString, ReturnArgLambdaExecutor<String, String> formatter) {
+    /**
+     * To string string.
+     *
+     * @param <T>       the type parameter
+     * @param list      the list
+     * @param toString  the to string
+     * @param formatter the formatter
+     * @return the string
+     */
+    public static <T> String toString(final List<T> list, final ReturnArgLambdaExecutor<String, T> toString, final ReturnArgLambdaExecutor<String, String> formatter) {
         return "[" + list.stream().filter(Objects::nonNull).map(toString::execute).reduce("", (a, b) -> {
             b = formatter.execute(b);
 
@@ -24,7 +44,15 @@ public class ListUtils {
         }) + "]";
     }
 
-    public static <T> String toString(Stream<T> list, ReturnArgLambdaExecutor<String, T> toString) {
+    /**
+     * To string string.
+     *
+     * @param <T>      the type parameter
+     * @param list     the list
+     * @param toString the to string
+     * @return the string
+     */
+    public static <T> String toString(final Stream<T> list, final ReturnArgLambdaExecutor<String, T> toString) {
         return toString(list.collect(Collectors.toList()), toString);
     }
 

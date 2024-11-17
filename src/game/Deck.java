@@ -1,6 +1,5 @@
 package game;
 
-import cards.Card;
 import cards.minion.*;
 import fileio.CardInput;
 import lombok.Getter;
@@ -11,19 +10,32 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/**
+ * The type Deck.
+ */
 @Getter
 public class Deck {
-    private List<Minion> minions;
+    private final List<Minion> minions;
 
-    public Deck(Deck deck){
+    /**
+     * Instantiates a new Deck.
+     *
+     * @param deck the deck
+     */
+    public Deck(final Deck deck) {
         // performs a copy
         this.minions = new ArrayList<>(deck.minions.stream().map(Minion::copy).collect(Collectors.toList()));
     }
 
-    public Deck(List<CardInput> minions) {
+    /**
+     * Instantiates a new Deck.
+     *
+     * @param minions the minions
+     */
+    public Deck(final List<CardInput> minions) {
         this.minions = new ArrayList<>();
-        for (CardInput minion : minions) {
-            switch (minion.getName()){
+        for (final CardInput minion : minions) {
+            switch (minion.getName()) {
                 case "Berserker":
                     this.minions.add(new Berserker(minion));
                     break;
@@ -55,11 +67,21 @@ public class Deck {
         }
     }
 
-    public void shuffle(long seed) {
+    /**
+     * Shuffle.
+     *
+     * @param seed the seed
+     */
+    public void shuffle(final long seed) {
         Collections.shuffle(minions, new Random(seed));
     }
 
-    public Deck copy(){
+    /**
+     * Copy deck.
+     *
+     * @return the deck
+     */
+    public Deck copy() {
         return new Deck(this);
     }
 }

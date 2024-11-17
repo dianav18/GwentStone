@@ -5,18 +5,33 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * The type Message builder.
+ */
 public class MessageBuilder extends GenericMessageBuilder<String> {
 
-    public MessageBuilder(String base) {
+    /**
+     * Instantiates a new Message builder.
+     *
+     * @param base the base
+     */
+    public MessageBuilder(final String base) {
         super(base);
     }
 
-    protected MessageBuilder(String base, List<Object> placeholders, List<Object> values) {
+    /**
+     * Instantiates a new Message builder.
+     *
+     * @param base         the base
+     * @param placeholders the placeholders
+     * @param values       the values
+     */
+    protected MessageBuilder(final String base, final List<Object> placeholders, final List<Object> values) {
         super(base, placeholders, values);
     }
 
     @Override
-    protected boolean equals(String o1, String o2) {
+    protected boolean equals(final String o1, final String o2) {
         if (o1 == null) {
             return o2 == null;
         }
@@ -29,7 +44,7 @@ public class MessageBuilder extends GenericMessageBuilder<String> {
     }
 
     @Override
-    protected String parsePlaceholder(String base, String placeholder, String value) {
+    protected String parsePlaceholder(final String base, final String placeholder, final String value) {
         if (base == null) {
             return null;
         }
@@ -41,11 +56,11 @@ public class MessageBuilder extends GenericMessageBuilder<String> {
         return new MessageBuilder(base, new ArrayList<>(placeholders), new ArrayList<>(values));
     }
 
-    public MessageBuilder parse(Map<?, ?> placeholders) {
+    public MessageBuilder parse(final Map<?, ?> placeholders) {
         return (MessageBuilder) super.parse(placeholders);
     }
 
-    public MessageBuilder parse(Object placeholder, Object value) {
+    public MessageBuilder parse(final Object placeholder, final Object value) {
         return (MessageBuilder) super.parse(placeholder, value);
     }
 }

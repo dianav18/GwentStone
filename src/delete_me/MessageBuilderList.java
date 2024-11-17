@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Message builder list.
+ */
 public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
 
     /**
@@ -10,16 +13,23 @@ public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
      *
      * @param base The base message to use.
      */
-    public MessageBuilderList(List<String> base) {
+    public MessageBuilderList(final List<String> base) {
         super(base);
     }
 
-    public MessageBuilderList(List<String> base, List<Object> placeholders, List<Object> values) {
+    /**
+     * Instantiates a new Message builder list.
+     *
+     * @param base         the base
+     * @param placeholders the placeholders
+     * @param values       the values
+     */
+    public MessageBuilderList(final List<String> base, final List<Object> placeholders, final List<Object> values) {
         super(base, placeholders, values);
     }
 
     @Override
-    protected boolean equals(List<String> o1, List<String> o2) {
+    protected boolean equals(final List<String> o1, final List<String> o2) {
         boolean output = true;
 
         if (o1 == null) {
@@ -39,10 +49,10 @@ public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
 
     @Override
     protected String convertToString() {
-        List<String> parsed = parse();
-        StringBuilder output = new StringBuilder();
+        final List<String> parsed = parse();
+        final StringBuilder output = new StringBuilder();
 
-        for (String line : parsed) {
+        for (final String line : parsed) {
             output
                     .append(line)
                     .append('\n');
@@ -52,14 +62,14 @@ public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
     }
 
     @Override
-    protected List<String> parsePlaceholder(List<String> base, String placeholder, String value) {
+    protected List<String> parsePlaceholder(final List<String> base, final String placeholder, final String value) {
         if (base == null) {
             return new ArrayList<>();
         }
 
-        List<String> output = new ArrayList<>();
+        final List<String> output = new ArrayList<>();
 
-        for (String line : base) {
+        for (final String line : base) {
             output.add(line.replace(placeholder, value));
         }
 
@@ -71,7 +81,7 @@ public class MessageBuilderList extends GenericMessageBuilder<List<String>> {
         return new MessageBuilderList(base, new ArrayList<>(placeholders), new ArrayList<>(values));
     }
 
-    public MessageBuilderList parse(Map<?, ?> placeholders) {
+    public MessageBuilderList parse(final Map<?, ?> placeholders) {
         return (MessageBuilderList) super.parse(placeholders);
     }
 }

@@ -1,24 +1,50 @@
 package fileio;
 
+/**
+ * The type Coordinates.
+ */
 public final class Coordinates {
    private int x, y;
 
-   public Coordinates() {
+    /**
+     * Instantiates a new Coordinates.
+     */
+    public Coordinates() {
    }
 
-   public int getX() {
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
+    public int getX() {
       return x;
    }
 
-   public void setX(final int x) {
+    /**
+     * Sets x.
+     *
+     * @param x the x
+     */
+    public void setX(final int x) {
       this.x = x;
    }
 
-   public int getY() {
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
+    public int getY() {
       return y;
    }
 
-   public void setY(final int y) {
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
+    public void setY(final int y) {
       this.y = y;
    }
 

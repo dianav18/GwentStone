@@ -4,17 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.Player;
 
+/**
+ * The type Get player mana.
+ */
 public class GetPlayerMana {
 
     private final Player player;
 
-    public GetPlayerMana(Player player) {
+    /**
+     * Instantiates a new Get player mana.
+     *
+     * @param player the player
+     */
+    public GetPlayerMana(final Player player) {
         this.player = player;
     }
 
+    /**
+     * Gets player mana.
+     *
+     * @return the player mana
+     */
     public ObjectNode getPlayerMana() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode response = objectMapper.createObjectNode();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectNode response = objectMapper.createObjectNode();
 
         response.put("command", "getPlayerMana");
         response.put("playerIdx", player.getPlayerIdx());

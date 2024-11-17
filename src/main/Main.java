@@ -1,20 +1,18 @@
 package main;
 
 import cards.hero.Hero;
-import cards.minion.Minion;
 import checker.Checker;
-
+import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import debug.*;
-import delete_me.ListUtils;
-import delete_me.MessageBuilderList;
-import delete_me.StringUtils;
-import fileio.*;
+import fileio.ActionsInput;
+import fileio.GameInput;
+import fileio.Input;
+import fileio.StartGameInput;
 import game.Game;
 import game.Player;
 
@@ -23,9 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -45,12 +41,12 @@ public final class Main {
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void main(final String[] args) throws IOException {
-        File directory = new File(CheckerConstants.TESTS_PATH);
-        Path path = Paths.get(CheckerConstants.RESULT_PATH);
+        final File directory = new File(CheckerConstants.TESTS_PATH);
+        final Path path = Paths.get(CheckerConstants.RESULT_PATH);
 
         if (Files.exists(path)) {
-            File resultFile = new File(String.valueOf(path));
-            for (File file : Objects.requireNonNull(resultFile.listFiles())) {
+            final File resultFile = new File(String.valueOf(path));
+            for (final File file : Objects.requireNonNull(resultFile.listFiles())) {
                 file.delete();
             }
             resultFile.delete();
@@ -58,15 +54,15 @@ public final class Main {
         Files.createDirectories(path);
 
         try {
-            for (File file : Objects.requireNonNull(directory.listFiles())) {
-                String filepath = CheckerConstants.OUT_PATH + file.getName();
-                File out = new File(filepath);
-                boolean isCreated = out.createNewFile();
+            for (final File file : Objects.requireNonNull(directory.listFiles())) {
+                final String filepath = CheckerConstants.OUT_PATH + file.getName();
+                final File out = new File(filepath);
+                final boolean isCreated = out.createNewFile();
                 if (isCreated) {
                     action(file.getName(), filepath);
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 
@@ -74,35 +70,42 @@ public final class Main {
     }
 
     /**
+     * Action.
+     *
      * @param filePath1 for input file
      * @param filePath2 for output file
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        Game.endedGames = 0;
+        Game.playerOneWins = 0;
+        Game.playerTwoWins = 0;
+
+        final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
         //objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
+        final Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);
 
-        ArrayNode output = objectMapper.createArrayNode();
+
+        final ArrayNode output = objectMapper.createArrayNode();
 
 //        StartGameInput startGameInput = inputDataGame.getStartGame();
 
 //        Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks(), startGameInput.getPlayerOneHero());
 //        Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks(), startGameInput.getPlayerTwoHero());
 
-        for (GameInput inputDataGame : inputData.getGames()) {
-            StartGameInput startGameInput = inputDataGame.getStartGame();
-            Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks());
-            Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks());
+        for (final GameInput inputDataGame : inputData.getGames()) {
+            final StartGameInput startGameInput = inputDataGame.getStartGame();
+            final Player player1 = new Player(1, inputData.getPlayerOneDecks().getDecks());
+            final Player player2 = new Player(2, inputData.getPlayerTwoDecks().getDecks());
 
-            Hero playerOneHero = Hero.create(startGameInput.getPlayerOneHero());
-            Hero playerTwoHero = Hero.create(startGameInput.getPlayerTwoHero());
+            final Hero playerOneHero = Hero.create(startGameInput.getPlayerOneHero());
+            final Hero playerTwoHero = Hero.create(startGameInput.getPlayerTwoHero());
 
-            System.out.println(playerOneHero);
-            System.out.println(playerTwoHero);
+//            System.out.println(playerOneHero);
+//            System.out.println(playerTwoHero);
 
 //            System.out.println(playerOneHero.getName());
 //            System.out.println(playerTwoHero.getName());
@@ -112,7 +115,7 @@ public final class Main {
 
             player1.setup();
             player2.setup();
-            Game game = new Game(
+            final Game game = new Game(
                     player1, player2,
                     inputDataGame.getStartGame().getPlayerOneDeckIdx(),
                     inputDataGame.getStartGame().getPlayerTwoDeckIdx(),
@@ -124,54 +127,54 @@ public final class Main {
 
             //StartGameInput startGameInput = inputDataGame.getStartGame();
 
-            for (ActionsInput action : inputDataGame.getActions()) {
+            for (final ActionsInput action : inputDataGame.getActions()) {
 
                 // System.out.println("ACTION: " + action);
-                String command = action.getCommand();
+                final String command = action.getCommand();
 
                 ObjectNode newNode = null;
                 switch (command) {
                     case "getPlayerDeck":
-                        int playerIdx = action.getPlayerIdx();
-                        ObjectNode deckOutput = new GetPlayerDeck(game).getPlayerDeck(playerIdx);
+                        final int playerIdx = action.getPlayerIdx();
+                        final ObjectNode deckOutput = new GetPlayerDeck(game).getPlayerDeck(playerIdx);
                         newNode = (deckOutput);
                         break;
                     case "getPlayerHero":
-                        Hero selectedHero = action.getPlayerIdx() == 1 ? playerOneHero : playerTwoHero;
-                        GetPlayerHero getPlayerHeroCommand = new GetPlayerHero(selectedHero, action.getPlayerIdx());
+                        final Hero selectedHero = action.getPlayerIdx() == 1 ? playerOneHero : playerTwoHero;
+                        final GetPlayerHero getPlayerHeroCommand = new GetPlayerHero(selectedHero, action.getPlayerIdx());
                         newNode = (getPlayerHeroCommand.getHeroData(objectMapper));
                         break;
                     case "getPlayerTurn":
-                        int activePlayerIndex = game.getActivePlayerIndex();
-                        GetPlayerTurn playerTurn = new GetPlayerTurn(activePlayerIndex);
+                        final int activePlayerIndex = game.getTurn();
+                        final GetPlayerTurn playerTurn = new GetPlayerTurn(activePlayerIndex);
                         newNode = (playerTurn.getPlayerTurn(objectMapper));
                         break;
                     case "getCardsInHand":
-                        int playerIndex = action.getPlayerIdx();
-                        Player targetPlayer = (playerIndex == 1) ? player1 : player2;
-                        GetCardsInHand getCardsInHandCommand = new GetCardsInHand(targetPlayer);
+                        final int playerIndex = action.getPlayerIdx();
+                        final Player targetPlayer = (playerIndex == 1) ? player1 : player2;
+                        final GetCardsInHand getCardsInHandCommand = new GetCardsInHand(targetPlayer);
                         newNode = (getCardsInHandCommand.getCardsInHand(objectMapper));
                         break;
                     case "endPlayerTurn":
                         game.endTurn(); // TODO Move tgo class and call it
                         break;
                     case "placeCard":
-                        int handIndex = action.getHandIdx();
+                        final int handIndex = action.getHandIdx();
                         game.placeCard(handIndex, objectMapper, output);
                         break;
                     case "getPlayerMana":
-                        int manaPlayerIdx = action.getPlayerIdx();
-                        Player manaTargetPlayer = (manaPlayerIdx == 1) ? player1 : player2;
-                        GetPlayerMana getPlayerManaCommand = new GetPlayerMana(manaTargetPlayer);
+                        final int manaPlayerIdx = action.getPlayerIdx();
+                        final Player manaTargetPlayer = (manaPlayerIdx == 1) ? player1 : player2;
+                        final GetPlayerMana getPlayerManaCommand = new GetPlayerMana(manaTargetPlayer);
                         newNode = (getPlayerManaCommand.getPlayerMana());
                         break;
                     case "getCardsOnTable":
                         output.add(new GetCardsOnTable(game).getCardsOnTable());
                         break;
                     case "getCardAtPosition":
-                        int x = action.getX();
-                        int y = action.getY();
-                        GetCardAtPosition getCardAtPositionCommand = new GetCardAtPosition(game, x, y, objectMapper);
+                        final int x = action.getX();
+                        final int y = action.getY();
+                        final GetCardAtPosition getCardAtPositionCommand = new GetCardAtPosition(game, x, y, objectMapper);
                         newNode = (getCardAtPositionCommand.getCardAtPosition());
                         break;
                     case "cardUsesAttack":
@@ -180,8 +183,8 @@ public final class Main {
                         int xAttacked = action.getCardAttacked().getX();
                         int yAttacked = action.getCardAttacked().getY();
 
-                        CardUsesAttack cardUsesAttackCommand = new CardUsesAttack(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
-                        ObjectNode cardUsesAttackNode = cardUsesAttackCommand.executeAttack();
+                        final CardUsesAttack cardUsesAttackCommand = new CardUsesAttack(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
+                        final ObjectNode cardUsesAttackNode = cardUsesAttackCommand.executeAttack();
                         if (!cardUsesAttackNode.toString().equals("{}")) {
                             newNode = cardUsesAttackNode;
                         }
@@ -192,8 +195,8 @@ public final class Main {
                         xAttacked = action.getCardAttacked().getX();
                         yAttacked = action.getCardAttacked().getY();
 
-                        CardUsesAbility cardUsesAbilityCommand = new CardUsesAbility(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
-                        ObjectNode cardUsesAbilityNode = cardUsesAbilityCommand.executeAbility();
+                        final CardUsesAbility cardUsesAbilityCommand = new CardUsesAbility(game, xAttacker, yAttacker, xAttacked, yAttacked, objectMapper);
+                        final ObjectNode cardUsesAbilityNode = cardUsesAbilityCommand.executeAbility();
                         if (!cardUsesAbilityNode.toString().equals("{}")) {
                             newNode = cardUsesAbilityNode;
                         }
@@ -202,7 +205,7 @@ public final class Main {
                         xAttacker = action.getCardAttacker().getX();
                         yAttacker = action.getCardAttacker().getY();
 
-                        Hero attackedHero;
+                        final Hero attackedHero;
 
                         if (xAttacker == 0 || xAttacker == 1) {
                             attackedHero = playerOneHero;
@@ -210,36 +213,36 @@ public final class Main {
                             attackedHero = playerTwoHero;
                         }
 
-                        UseAttackHero useAttackHeroCommand = new UseAttackHero(game, xAttacker, yAttacker, attackedHero, objectMapper);
-                        ObjectNode attackHeroResult = useAttackHeroCommand.executeAttack();
+                        final UseAttackHero useAttackHeroCommand = new UseAttackHero(game, xAttacker, yAttacker, attackedHero, objectMapper);
+                        final ObjectNode attackHeroResult = useAttackHeroCommand.executeAttack();
 
                         if (!attackHeroResult.isEmpty()) {
                             newNode = attackHeroResult;
                         }
                         break;
                     case "useHeroAbility":
-                        int affectedRow = action.getAffectedRow();
+                        final int affectedRow = action.getAffectedRow();
 
-                        UseHeroAbility useHeroAbilityCommand = new UseHeroAbility(game, affectedRow, objectMapper);
-                        ObjectNode heroAbilityResult = useHeroAbilityCommand.executeAbility();
+                        final UseHeroAbility useHeroAbilityCommand = new UseHeroAbility(game, affectedRow, objectMapper);
+                        final ObjectNode heroAbilityResult = useHeroAbilityCommand.executeAbility();
                         if (!heroAbilityResult.isEmpty()) {
                             newNode = heroAbilityResult;
                         }
                         break;
                     case "getFrozenCardsOnTable":
-                        GetFrozenCardsOnTable frozenCardsCommand = new GetFrozenCardsOnTable(game);
+                        final GetFrozenCardsOnTable frozenCardsCommand = new GetFrozenCardsOnTable(game);
                         newNode = frozenCardsCommand.getFrozenCards(objectMapper);
                         break;
                     case "getTotalGamesPlayed":
-                        GetTotalGamesPlayed getTotalGamesPlayedCommand = new GetTotalGamesPlayed(game);
+                        final GetTotalGamesPlayed getTotalGamesPlayedCommand = new GetTotalGamesPlayed(game);
                         newNode = getTotalGamesPlayedCommand.getTotalGamesPlayed(objectMapper);
                         break;
                     case "getPlayerOneWins":
-                        GetPlayerOneWins getPlayerOneWinsCommand = new GetPlayerOneWins(game);
+                        final GetPlayerOneWins getPlayerOneWinsCommand = new GetPlayerOneWins(game);
                         newNode = getPlayerOneWinsCommand.getPlayerOneWins(objectMapper);
                         break;
                     case "getPlayerTwoWins":
-                        GetPlayerTwoWins getPlayerTwoWinsCommand = new GetPlayerTwoWins(game);
+                        final GetPlayerTwoWins getPlayerTwoWinsCommand = new GetPlayerTwoWins(game);
                         newNode = getPlayerTwoWinsCommand.getPlayerTwoWins(objectMapper);
                         break;
                     default:
@@ -253,7 +256,7 @@ public final class Main {
                 //printGameState(game); // TODO Remove
             }
 
-            ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+            final ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
             objectWriter.writeValue(new File(filePath2), output);
         }
     }

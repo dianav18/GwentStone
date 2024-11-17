@@ -3,13 +3,21 @@ package cards.minion;
 import fileio.CardInput;
 import lombok.NoArgsConstructor;
 
+/**
+ * The type Sentinel.
+ */
 @NoArgsConstructor
-public class Sentinel extends Minion {
-    public Sentinel(CardInput cardInput) {
+public final class Sentinel extends Minion {
+    /**
+     * Instantiates a new Sentinel.
+     *
+     * @param cardInput the card input
+     */
+    public Sentinel(final CardInput cardInput) {
         super(cardInput, false, Row.BACK);
     }
 
-    protected Minion constructNew(){
+    protected Minion constructNew() {
         return new Sentinel();
     }
 

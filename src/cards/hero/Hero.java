@@ -1,39 +1,51 @@
 package cards.hero;
 
 import cards.Card;
-import cards.minion.Minion;
 import fileio.CardInput;
-import game.Game;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.processing.Generated;
 import java.util.ArrayList;
 
+/**
+ * The type Hero.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 public abstract class Hero extends Card {
     private int mana;
-    private int health ;
     private String description;
     private ArrayList<String> colors;
     private String name;
     private boolean hasAttacked;
+    private static final int DEFAULT_HEALTH = 30;
+    private int health;
 
-    public Hero(CardInput cardInput) {
+    /**
+     * Instantiates a new Hero.
+     *
+     * @param cardInput the card input
+     */
+    public Hero(final CardInput cardInput) {
         super(cardInput);
         this.mana = cardInput.getMana();
         this.description = cardInput.getDescription();
         this.colors = cardInput.getColors();
         this.name = cardInput.getName();
         this.hasAttacked = false;
-        this.health = 30;
+        this.health = DEFAULT_HEALTH;
     }
 
-    public static Hero create(CardInput input){
-        switch (input.getName()){
+    /**
+     * Constructor for initializing a Hero object based on the provided card input.
+     *
+     * @param input the input containing the hero's attributes such as mana, description, colors, and name
+     * @return the hero
+     */
+    public static Hero create(final CardInput input) {
+        switch (input.getName()) {
             case "Empress Thorina":
                 return new EmpressThorina(input);
             case "General Kocioraw":
@@ -42,19 +54,37 @@ public abstract class Hero extends Card {
                 return new KingMudface(input);
             case "Lord Royce":
                 return new LordRoyce(input);
+            default:
+                break;
         }
-        return null; // This should never happen
+        return null;
     }
 
-    public boolean canUseAbility(int abilityHandCost) {
+    /**
+     * Checks if the hero has enough mana to use their ability.
+     *
+     * @param abilityHandCost the mana cost of the hero's ability
+     * @return true if the hero has sufficient mana, false otherwise
+     */
+    public boolean canUseAbility(final int abilityHandCost) {
         return this.mana >= abilityHandCost;
     }
 
-    public void useAbility(int abilityHandCost) {
+    /**
+     * Deducts the mana cost of the hero's ability from the hero's current mana.
+     *
+     * @param abilityHandCost the mana cost of the hero's ability
+     */
+    public void useAbility(final int abilityHandCost) {
         this.mana -= abilityHandCost;
     }
 
-    public boolean hasAttacked(){
+    /**
+     * Checks if the hero has already attacked during the current turn.
+     *
+     * @return true if the hero has attacked, false otherwise
+     */
+    public boolean hasAttacked() {
         return this.hasAttacked;
     }
 }

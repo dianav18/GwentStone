@@ -3,18 +3,31 @@ package cards.minion;
 import fileio.CardInput;
 import lombok.NoArgsConstructor;
 
+/**
+ * The type Disciple.
+ */
 @NoArgsConstructor
-public class Disciple extends Minion {
-    public Disciple(CardInput cardInput) {
-        super(cardInput, false, Row.BACK);
-        this.setAttackDamage(0);
-    }
+    public final class Disciple extends Minion {
+    /**
+     * Instantiates a new Disciple.
+     *
+     * @param cardInput the card input
+     */
+    public Disciple(final CardInput cardInput) {
+            super(cardInput, false, Row.BACK);
+            this.setAttackDamage(0);
+        }
 
-    public void godsPlan(Minion allyMinion) {
+    /**
+     * Increases the allyMinion's health by 2
+     *
+     * @param allyMinion the minion on which the ability will be applied
+     */
+    public void godsPlan(final Minion allyMinion) {
         allyMinion.setHealth(allyMinion.getHealth() + 2);
     }
 
-    protected Minion constructNew(){
+    protected Minion constructNew() {
         return new Disciple();
     }
 }

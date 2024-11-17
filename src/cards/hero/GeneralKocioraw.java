@@ -1,20 +1,33 @@
 package cards.hero;
 
-import fileio.CardInput;
 import cards.minion.Minion;
-import lombok.NoArgsConstructor;
+import fileio.CardInput;
 
-import java.util.List;
-public class GeneralKocioraw extends Hero{
+/**
+ * The type General kocioraw.
+ */
+public class GeneralKocioraw extends Hero {
 
-    public GeneralKocioraw(CardInput cardInput) {
+    /**
+     * Instantiates a new General kocioraw.
+     *
+     * @param cardInput the card input
+     */
+    public GeneralKocioraw(final CardInput cardInput) {
         super(cardInput);
     }
 
-    public void BloodThirst(Minion[][] board, int rowIndex) {
-        Minion[] row = board[rowIndex];
+    /**
+     * Executes the BloodThirst ability, which increments the attack by one for all cards
+     * on the specified row.
+     *
+     * @param board    the game board
+     * @param rowIndex the index of the targeted row
+     */
+    public static void bloodThirst(final Minion[][] board, final int rowIndex) {
+        final Minion[] row = board[rowIndex];
 
-        for (Minion minion : row) {
+        for (final Minion minion : row) {
             if (minion != null) {
                 minion.setAttackDamage(minion.getAttackDamage() + 1);
             }

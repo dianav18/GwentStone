@@ -1,25 +1,35 @@
 package game;
 
-import fileio.StartGameInput;
 import cards.hero.Hero;
+import fileio.StartGameInput;
 import lombok.Getter;
 
+/**
+ * The type Start game.
+ */
 public class StartGame {
     @Getter
-    private Player playerOne;
+    private final Player playerOne;
     @Getter
-    private Player playerTwo;
+    private final Player playerTwo;
     @Getter
-    private Hero playerOneHero;
+    private final Hero playerOneHero;
     @Getter
-    private Hero playerTwoHero;
+    private final Hero playerTwoHero;
     @Getter
-    private int startingPlayer;
-    private int playerOneDeckIdx;
-    private int playerTwoDeckIdx;
-    private int shuffleSeed;
+    private final int startingPlayer;
+    private final int playerOneDeckIdx;
+    private final int playerTwoDeckIdx;
+    private final int shuffleSeed;
 
-    public StartGame(StartGameInput startGameInput, Player playerOne, Player playerTwo) {
+    /**
+     * Instantiates a new Start game.
+     *
+     * @param startGameInput the start game input
+     * @param playerOne      the player one
+     * @param playerTwo      the player two
+     */
+    public StartGame(final StartGameInput startGameInput, final Player playerOne, final Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.startingPlayer = startGameInput.getStartingPlayer();
@@ -34,7 +44,7 @@ public class StartGame {
         setDeckForPlayer(playerTwo, playerTwoDeckIdx, shuffleSeed);
     }
 
-    private void setDeckForPlayer(Player player, int deckIndex, int shuffleSeed) {
+    private void setDeckForPlayer(final Player player, final int deckIndex, final int shuffleSeed) {
 //        ArrayList<CardInput> selectedDeck = new ArrayList<>(player.getDecks().get(deckIndex));
 //
 //        Random random = new Random(shuffleSeed);

@@ -4,6 +4,10 @@ import fileio.CardInput;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+/**
+ * The type Card.
+ */
 @NoArgsConstructor
 public abstract class Card {
     @Getter
@@ -13,13 +17,15 @@ public abstract class Card {
     @Setter
     private int y;
 
-    public Card(CardInput card) {
+    /**
+     * Instantiates a new Card.
+     *
+     * @param card the card
+     */
+    public Card(final CardInput card) {
         this.card = new CardInput();
 
         this.x = -1;
         this.y = -1;
-    }
-    private void setCard(CardInput card) {
-        this.card = card;
     }
 }

@@ -2,26 +2,52 @@ package fileio;
 
 import java.util.ArrayList;
 
+/**
+ * The type Game input.
+ */
 public final class GameInput {
         private StartGameInput startGame;
         private ArrayList<ActionsInput> actions;
 
-        public GameInput() {
+    /**
+     * Instantiates a new Game input.
+     */
+    public GameInput() {
         }
 
-        public StartGameInput getStartGame() {
+    /**
+     * Gets start game.
+     *
+     * @return the start game
+     */
+    public StartGameInput getStartGame() {
                 return startGame;
         }
 
-        public void setStartGame(final StartGameInput startGame) {
+    /**
+     * Sets start game.
+     *
+     * @param startGame the start game
+     */
+    public void setStartGame(final StartGameInput startGame) {
                 this.startGame = startGame;
         }
 
-        public ArrayList<ActionsInput> getActions() {
+    /**
+     * Gets actions.
+     *
+     * @return the actions
+     */
+    public ArrayList<ActionsInput> getActions() {
                 return actions;
         }
 
-        public void setActions(final ArrayList<ActionsInput> actions) {
+    /**
+     * Sets actions.
+     *
+     * @param actions the actions
+     */
+    public void setActions(final ArrayList<ActionsInput> actions) {
                 this.actions = actions;
         }
 
