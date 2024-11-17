@@ -41,7 +41,8 @@ public abstract class Hero extends Card {
     /**
      * Constructor for initializing a Hero object based on the provided card input.
      *
-     * @param input the input containing the hero's attributes such as mana, description, colors, and name
+     * @param input the input containing the hero's attributes such as mana,
+     * description, colors, and name
      * @return the hero
      */
     public static Hero create(final CardInput input) {

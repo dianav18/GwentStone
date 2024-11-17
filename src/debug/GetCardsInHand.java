@@ -27,7 +27,9 @@ public final class GetCardsInHand {
      * Retrieves the details of all cards in the player's hand.
      *
      * @param objectMapper the ObjectMapper used for creating JSON nodes.
-     * @return an ObjectNode containing details of all cards in the player's hand. The structure includes the card's mana, attack damage, health, description, colors, and name.
+     * @return an ObjectNode containing details of all cards in the player's hand.
+     * The structure includes the card's mana, attack damage, health, description,
+     * colors, and name.
      */
     public ObjectNode getCardsInHand(final ObjectMapper objectMapper) {
         final ObjectNode output = objectMapper.createObjectNode();

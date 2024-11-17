@@ -29,7 +29,8 @@ public class StartGame {
      * @param playerOne      the player one
      * @param playerTwo      the player two
      */
-    public StartGame(final StartGameInput startGameInput, final Player playerOne, final Player playerTwo) {
+    public StartGame(final StartGameInput startGameInput,
+                     final Player playerOne, final Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.startingPlayer = startGameInput.getStartingPlayer();

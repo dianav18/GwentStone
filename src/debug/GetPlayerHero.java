@@ -27,7 +27,15 @@ public class GetPlayerHero {
      * Retrieves the hero's data and formats it as a JSON object.
      *
      * @param objectMapper the ObjectMapper used for JSON operations.
-     * @return an ObjectNode containing the hero's data. The structure includes:- "command": the name of the command executed ("getPlayerHero").- "playerIdx": the index of the player whose hero is being retrieved.- "output": a JSON object with the hero's details, including:  - "mana": the hero's mana points.  - "description": the hero's description.  - "name": the hero's name.  - "health": the hero's current health points.  - "colors": an array of colors associated with the hero.
+     * @return an ObjectNode containing the hero's data. The structure includes:
+     * - "command": the name of the command executed ("getPlayerHero").
+     * - "playerIdx": the index of the player whose hero is being retrieved.
+     * - "output": a JSON object with the hero's details, including:
+     *              - "mana": the hero's mana points.
+     *              - "description": the hero's description.
+     *              - "name": the hero's name.
+     *              - "health": the hero's current health points.
+     *              - "colors": an array of colors associated with the hero.
      */
     public ObjectNode getHeroData(final ObjectMapper objectMapper) {
         final ObjectNode heroOutput = objectMapper.createObjectNode();

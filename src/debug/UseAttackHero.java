@@ -25,7 +25,8 @@ public class UseAttackHero {
      * @param attackedHero the attacked hero
      * @param objectMapper the object mapper
      */
-    public UseAttackHero(final Game game, final int xAttacker, final int yAttacker, final Hero attackedHero, final ObjectMapper objectMapper) {
+    public UseAttackHero(final Game game, final int xAttacker, final int yAttacker,
+                         final Hero attackedHero, final ObjectMapper objectMapper) {
         this.game = game;
         this.xAttacker = xAttacker;
         this.yAttacker = yAttacker;

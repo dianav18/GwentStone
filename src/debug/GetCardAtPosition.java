@@ -33,7 +33,8 @@ public class GetCardAtPosition {
     /**
      * Retrieves the card at the specified position on the game board.
      *
-     * @return an ObjectNode containing the details of the card at the specified position         or an empty ObjectNode if no card is present.
+     * @return an ObjectNode containing the details of the card at the specified position
+     * or an empty ObjectNode if no card is present.
      */
     public ObjectNode getCardAtPosition() {
         final ArrayNode output = objectMapper.createArrayNode();

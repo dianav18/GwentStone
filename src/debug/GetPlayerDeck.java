@@ -26,7 +26,12 @@ public final class GetPlayerDeck {
      * Retrieves the current deck of a specified player.
      *
      * @param playerIdx the index of the player (1 for Player One, 2 for Player Two).
-     * @return an ObjectNode containing the player's deck information.The structure includes:- "command": the name of the command executed ("getPlayerDeck").- "playerIdx": the index of the player whose deck is retrieved.- "output": an ArrayNode containing the cards in the player's deck,  where each card includes its attributes (e.g., mana, attack damage, health, etc.).
+     * @return an ObjectNode containing the player's deck information.The structure includes:
+     * - "command": the name of the command executed ("getPlayerDeck").
+     * - "playerIdx": the index of the player whose deck is retrieved.
+     * - "output": an ArrayNode containing the cards in the player's deck,
+     *              where each card includes its attributes
+     *              (e.g., mana, attack damage, health, etc.).
      */
     public ObjectNode getPlayerDeck(final int playerIdx) {
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -45,7 +50,8 @@ public final class GetPlayerDeck {
         final ArrayNode output = objectMapper.createArrayNode();
         assert deck != null;
         for (final Minion card : deck.getMinions()) {
-            final ObjectNode cardNode = objectMapper.convertValue(card.toInferior(), ObjectNode.class);
+            final ObjectNode cardNode = objectMapper.convertValue(
+                    card.toInferior(), ObjectNode.class);
             output.add(cardNode);
         }
 

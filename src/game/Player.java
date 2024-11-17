@@ -23,7 +23,6 @@ public class Player {
     private Deck currentDeck;
     private Hand hand;
 
-//    private BoardSide boardSide = new BoardSide();
     @Setter
     @Getter
     private Hero hero;
@@ -58,7 +57,6 @@ public class Player {
     public void setup() {
         this.hand = new Hand();
         this.mana = 0;
-        //this.hero = new Hero(heroInput);
         // TODO and mana etc
     }
 

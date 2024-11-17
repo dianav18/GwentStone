@@ -1,6 +1,5 @@
 package cards.minion;
 
-import delete_me.MessageBuilder;
 import fileio.CardInput;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -146,23 +145,5 @@ public abstract class Minion {
      */
     public boolean hasAttacked() {
         return this.hasAttacked;
-    }
-
-    /**
-     * Returns a string representation of the minion.
-     *
-     * @return a string containing the minion's details.
-     */
-    @Override
-    public String toString() {
-        return new MessageBuilder("{name}(H{health} A{attack} M{mana}"
-                + "H_A={has_attacked} F={frozen})")
-                .parse("name", this.name)
-                .parse("attack", this.attackDamage)
-                .parse("health", this.health)
-                .parse("mana", this.mana)
-                .parse("has_attacked", this.hasAttacked)
-                .parse("frozen", this.frozen)
-                .parse();
     }
 }

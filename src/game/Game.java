@@ -24,7 +24,10 @@ public class Game {
 
     private int round = 1;
 
-    private final Minion[][] board = new Minion[4][5];
+    private final int numOfRows = 4;
+    private final int numOfCols = 5;
+
+    private final Minion[][] board = new Minion[numOfRows][numOfCols];
 
     private final Hero player1Hero;
     private final Hero player2Hero;
@@ -47,7 +50,9 @@ public class Game {
      * @param player1Hero      the player 1 hero
      * @param player2Hero      the player 2 hero
      */
-    public Game(final Player player1, final Player player2, final int player1DeckIndex, final int player2DeckIndex, final long seed, final int startingTurn, final Hero player1Hero, final Hero player2Hero) {
+    public Game(final Player player1, final Player player2, final int player1DeckIndex,
+                final int player2DeckIndex, final long seed, final int startingTurn,
+                final Hero player1Hero, final Hero player2Hero) {
         this.player1 = player1;
         this.player2 = player2;
 
@@ -62,7 +67,11 @@ public class Game {
         nextRound();
     }
 
-    private static void cardUsesAttackOutput(final int xAttacked, final int yAttacked, final int xAttacker, final int yAttacker, final ObjectMapper objectMapper, final ObjectNode attackerCardDetails, final ObjectNode resultNode) {
+    private static void cardUsesAttackOutput(final int xAttacked, final int yAttacked,
+                                             final int xAttacker, final int yAttacker,
+                                             final ObjectMapper objectMapper,
+                                             final ObjectNode attackerCardDetails,
+                                             final ObjectNode resultNode) {
         attackerCardDetails.put("x", xAttacker);
         attackerCardDetails.put("y", yAttacker);
         final ObjectNode attackedCardDetails = objectMapper.createObjectNode();
@@ -116,6 +125,8 @@ public class Game {
             case 1:
                 index = 2;
                 break;
+            default:
+                break;
         }
 
         for (final Minion minion : board[index]) {
@@ -124,7 +135,7 @@ public class Game {
             }
             minion.setFrozen(false);
         }
-        for (final Minion minion : board[index+1]) {
+        for (final Minion minion : board[index + 1]) {
             if (minion == null) {
                 continue;
             }
@@ -168,7 +179,8 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void placeCard(final int cardIndex, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void placeCard(final int cardIndex, final ObjectMapper objectMapper,
+                          final ArrayNode output) {
         final Player player = getPlayerTurn();
         final List<Minion> handMinions = player.getHand().getMinions();
 
@@ -176,7 +188,9 @@ public class Game {
             final Minion minion = handMinions.get(cardIndex);
 
             if (minion.getMana() > player.getMana()) {
-                output.add(PlaceCard.placeCardError(objectMapper, "Not enough mana to place card on table.", cardIndex));
+                output.add(PlaceCard.placeCardError(objectMapper,
+                        "Not enough mana to place card on table.",
+                        cardIndex));
                 return;
             }
 
@@ -205,7 +219,8 @@ public class Game {
                 }
             }
 
-            output.add(PlaceCard.placeCardError(objectMapper, "Cannot place card on table since row is full.", cardIndex));
+            output.add(PlaceCard.placeCardError(objectMapper,
+                    "Cannot place card on table since row is full.", cardIndex));
         }
     }
 
@@ -237,7 +252,9 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void getCardAtPosition(final int x, final int y, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void getCardAtPosition(final int x, final int y,
+                                  final ObjectMapper objectMapper,
+                                  final ArrayNode output) {
         final ObjectNode resultNode = objectMapper.createObjectNode();
         resultNode.put("command", "getCardAtPosition");
         resultNode.put("x", x);
@@ -277,15 +294,18 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void cardUsesAttack(final int xAttacked, final int yAttacked, final int xAttacker, final int yAttacker, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void cardUsesAttack(final int xAttacked, final int yAttacked,
+                               final int xAttacker, final int yAttacker,
+                               final ObjectMapper objectMapper,
+                               final ArrayNode output) {
         final ObjectNode resultNode = objectMapper.createObjectNode();
 
         final Minion attackedCard = board[xAttacked][yAttacked];
         final Minion attackerCard = board[xAttacker][yAttacker];
 
-        if (attackerCard == null || attackedCard == null)
+        if (attackerCard == null || attackedCard == null) {
             return;
-
+        }
         int isAttackedCardEnemy = 0;
 
         if (getPlayerTurn() == player1 && (xAttacked == 0 || xAttacked == 1)) {
@@ -296,7 +316,8 @@ public class Game {
 
         if (isAttackedCardEnemy == 0) {
             final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
-            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, attackerCardDetails, resultNode);
+            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, attackerCardDetails, resultNode);
             resultNode.put("error", "Attacked card does not belong to the enemy.");
             output.add(resultNode);
             return;
@@ -304,7 +325,8 @@ public class Game {
 
         if (attackerCard.hasAttacked()) {
             final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
-            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, attackerCardDetails, resultNode);
+            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, attackerCardDetails, resultNode);
 
             resultNode.put("error", "Attacker card has already attacked this turn.");
             output.add(resultNode);
@@ -313,7 +335,8 @@ public class Game {
 
         if (attackerCard.isFrozen()) {
             final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
-            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, attackerCardDetails, resultNode);
+            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, attackerCardDetails, resultNode);
 
             resultNode.put("error", "Attacker card is frozen.");
             output.add(resultNode);
@@ -338,7 +361,8 @@ public class Game {
 
         if (enemyHasTank && !attackedCard.isTank()) {
             final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
-            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, attackerCardDetails, resultNode);
+            cardUsesAttackOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, attackerCardDetails, resultNode);
 
             resultNode.put("error", "Attacked card is not of type 'Tank'.");
             output.add(resultNode);
@@ -370,7 +394,10 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void cardUsesAbility(final int xAttacked, final int yAttacked, final int xAttacker, final int yAttacker, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void cardUsesAbility(final int xAttacked, final int yAttacked,
+                                final int xAttacker, final int yAttacker,
+                                final ObjectMapper objectMapper,
+                                final ArrayNode output) {
         final ObjectNode resultNode = objectMapper.createObjectNode();
 
         final Minion attackerCard = board[xAttacker][yAttacker];
@@ -381,14 +408,16 @@ public class Game {
         }
 
         if (attackerCard.isFrozen()) {
-            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, resultNode);
+            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, resultNode);
             resultNode.put("error", "Attacker card is frozen.");
             output.add(resultNode);
             return;
         }
 
         if (attackerCard.hasAttacked()) {
-            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, resultNode);
+            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker,
+                    objectMapper, resultNode);
             resultNode.put("error", "Attacker card has already attacked this turn.");
             output.add(resultNode);
             return;
@@ -404,8 +433,10 @@ public class Game {
             }
 
             if (!isAttackedCardAlly) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, resultNode);
-                resultNode.put("error", "Attacked card does not belong to the current player.");
+                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
+                        yAttacker, objectMapper, resultNode);
+                resultNode.put("error", "Attacked card does"
+                        + " not belong to the current player.");
                 output.add(resultNode);
                 return;
             }
@@ -413,7 +444,8 @@ public class Game {
             attackerCard.setHasAttacked(true);
         }
 
-        if (attackerCard instanceof TheRipper || attackerCard instanceof Miraj || attackerCard instanceof TheCursedOne) {
+        if (attackerCard instanceof TheRipper || attackerCard instanceof Miraj
+                || attackerCard instanceof TheCursedOne) {
             int isAttackedCardEnemy = 0;
 
             if (getPlayerTurn() == player1 && (xAttacked == 0 || xAttacked == 1)) {
@@ -422,7 +454,8 @@ public class Game {
                 isAttackedCardEnemy = 1;
             }
             if (isAttackedCardEnemy == 0) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, resultNode);
+                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
+                        yAttacker, objectMapper, resultNode);
                 resultNode.put("error", "Attacked card does not belong to the enemy.");
                 output.add(resultNode);
                 return;
@@ -445,7 +478,8 @@ public class Game {
             }
 
             if (enemyHasTank && !attackedCard.isTank()) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, resultNode);
+                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
+                        yAttacker, objectMapper, resultNode);
                 resultNode.put("error", "Attacked card is not of type 'Tank'.");
                 output.add(resultNode);
                 return;
@@ -460,12 +494,17 @@ public class Game {
                 case "The Cursed One":
                     ((TheCursedOne) attackerCard).shapeShift(attackedCard);
                     break;
+                default:
+                    break;
             }
             attackerCard.setHasAttacked(true);
         }
     }
 
-    private void cardUsesAbilityOutput(final int xAttacked, final int yAttacked, final int xAttacker, final int yAttacker, final ObjectMapper objectMapper, final ObjectNode resultNode) {
+    private void cardUsesAbilityOutput(final int xAttacked, final int yAttacked,
+                                       final int xAttacker, final int yAttacker,
+                                       final ObjectMapper objectMapper,
+                                       final ObjectNode resultNode) {
         final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
         attackerCardDetails.put("x", xAttacker);
         attackerCardDetails.put("y", yAttacker);
@@ -488,7 +527,10 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void useAttackHero(final int xAttacker, final int yAttacker, final Hero attackedHero, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void useAttackHero(final int xAttacker, final int yAttacker,
+                              final Hero attackedHero,
+                              final ObjectMapper objectMapper,
+                              final ArrayNode output) {
 
         final ObjectNode resultNode = objectMapper.createObjectNode();
 
@@ -498,11 +540,12 @@ public class Game {
             return;
         }
         final Player attackerPlayer;
-        if (xAttacker == 0 || xAttacker == 1)
-            attackerPlayer = player2;
-        else
-            attackerPlayer = player1;
 
+        if (xAttacker == 0 || xAttacker == 1) {
+            attackerPlayer = player2;
+        } else {
+            attackerPlayer = player1;
+        }
 
         if (attackerCard.isFrozen()) {
             useAttackHeroOutput(xAttacker, yAttacker, objectMapper, resultNode);
@@ -561,7 +604,9 @@ public class Game {
         }
     }
 
-    private void useAttackHeroOutput(final int xAttacker, final int yAttacker, final ObjectMapper objectMapper, final ObjectNode resultNode) {
+    private void useAttackHeroOutput(final int xAttacker, final int yAttacker,
+                                     final ObjectMapper objectMapper,
+                                     final ObjectNode resultNode) {
         final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
         attackerCardDetails.put("x", xAttacker);
         attackerCardDetails.put("y", yAttacker);
@@ -578,7 +623,9 @@ public class Game {
      * @param objectMapper the object mapper
      * @param output       the output
      */
-    public void useHeroAbility(final int affectedRow, final ObjectMapper objectMapper, final ArrayNode output) {
+    public void useHeroAbility(final int affectedRow,
+                               final ObjectMapper objectMapper,
+                               final ArrayNode output) {
         final Hero hero;
         final Player player;
 
@@ -623,6 +670,8 @@ public class Game {
                 case "Empress Thorina":
                     EmpressThorina.lowBlow(board, affectedRow);
                     break;
+                default:
+                    break;
             }
             player.setMana(player.getMana() - hero.getMana());
             hero.setHasAttacked(true);
@@ -642,6 +691,8 @@ public class Game {
                     break;
                 case "King Mudface":
                     ((KingMudface) hero).earthBorn(board, affectedRow);
+                    break;
+                default:
                     break;
             }
             player.setMana(player.getMana() - hero.getMana());

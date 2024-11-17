@@ -26,7 +26,12 @@ public final class GetCardsOnTable {
     /**
      * Retrieves the details of all cards currently placed on the game table.
      *
-     * @return an ObjectNode containing a structure of the cards on the table.The structure includes:- "command": the name of the command executed ("getCardsOnTable").- "output": an ArrayNode where each row of the table is represented           as an array of cards, with each card including its mana, attack damage,           health, description, colors, and name.
+     * @return an ObjectNode containing a structure of the cards on the table.
+     * The structure includes:
+     * - "command": the name of the command executed ("getCardsOnTable").
+     * - "output": an ArrayNode where each row of the table is represented
+     *             as an array of cards, with each card including its mana, attack damage,
+     *             health, description, colors, and name.
      */
     public ObjectNode getCardsOnTable() {
         final ObjectMapper objectMapper = new ObjectMapper();
