@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import debug.*;
+import actions.*;
 import fileio.ActionsInput;
 import fileio.GameInput;
 import fileio.Input;
@@ -85,7 +85,6 @@ public final class Main {
 
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
-        //objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         final Input inputData = objectMapper.readValue(
                 new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);

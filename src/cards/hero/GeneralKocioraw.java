@@ -1,7 +1,11 @@
 package cards.hero;
 
 import cards.minion.Minion;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
+import game.Player;
 
 /**
  * The type General kocioraw.
@@ -32,5 +36,25 @@ public class GeneralKocioraw extends Hero {
                 minion.setAttackDamage(minion.getAttackDamage() + 1);
             }
         }
+    }
+
+    public void useAbility(final Game game, final Player player, final int affectedRow, final ObjectNode resultNode, final ArrayNode output){
+        if (!game.isPlayerRow(player, affectedRow)) {
+            resultNode.put("command", "useHeroAbility");
+            resultNode.put("affectedRow", affectedRow);
+            resultNode.put("error", "Selected row does not belong to the current player.");
+            output.add(resultNode);
+            return;
+        }
+        final Minion[] row = game.getBoard()[affectedRow];
+
+        for (final Minion minion : row) {
+            if (minion != null) {
+                minion.setAttackDamage(minion.getAttackDamage() + 1);
+            }
+        }
+
+        player.setMana(player.getMana() - this.getMana());
+        this.setHasAttacked(true);
     }
 }

@@ -1,6 +1,10 @@
 package cards.minion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,24 +22,24 @@ public final class TheCursedOne extends Minion {
         this.setAttackDamage(0);
     }
 
-    /**
-     * Executes the ShapeShift ability which switches the attack and the life of
-     * an enemy minion
-     * if the health of the attack minion becomes zero it gets eliminated
-     *
-     * @param enemyMinion the enemy minion
-     */
-    public void shapeShift(final Minion enemyMinion) {
-        if (enemyMinion.getAttackDamage() == 0) {
-            enemyMinion.setHealth(0);
-        } else {
-            final int originalHealth = enemyMinion.getHealth();
-            enemyMinion.setHealth(enemyMinion.getAttackDamage());
-            enemyMinion.setAttackDamage(originalHealth);
-        }
-    }
 
     protected Minion constructNew() {
         return new TheCursedOne();
+    }
+
+    @Override
+    protected void internalUseAbility(final int xAttacked, final int yAttacked,
+                                      final int xAttacker, final int yAttacker,
+                                      final ObjectMapper objectMapper,
+                                      final ArrayNode output, final Game game, final ObjectNode resultNode,
+                                      final Minion attackedCard
+    ){
+        if (attackedCard.getAttackDamage() == 0) {
+            attackedCard.setHealth(0);
+        } else {
+            final int originalHealth = attackedCard.getHealth();
+            attackedCard.setHealth(attackedCard.getAttackDamage());
+            attackedCard.setAttackDamage(originalHealth);
+        }
     }
 }

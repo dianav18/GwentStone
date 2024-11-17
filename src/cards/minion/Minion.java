@@ -1,6 +1,10 @@
 package cards.minion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -145,5 +149,115 @@ public abstract class Minion {
      */
     public boolean hasAttacked() {
         return this.hasAttacked;
+    }
+
+    /**
+     * Use ability.
+     *
+     * @param xAttacked    the x attacked
+     * @param yAttacked    the y attacked
+     * @param xAttacker    the x attacker
+     * @param yAttacker    the y attacker
+     * @param objectMapper the object mapper
+     * @param output       the output
+     * @param game         the game
+     * @param resultNode   the result node
+     */
+    public void useAbility(final int xAttacked, final int yAttacked,
+                                    final int xAttacker, final int yAttacker,
+                                    final ObjectMapper objectMapper,
+                                    final ArrayNode output, final Game game, final ObjectNode resultNode){
+        final Minion attackerCard = game.getBoard()[xAttacker][yAttacker];
+        final Minion attackedCard = game.getBoard()[xAttacked][yAttacked];
+
+        int isAttackedCardEnemy = 0;
+
+        if (game.getPlayerTurn() == game.getPlayer1() && (xAttacked == 0 || xAttacked == 1)) {
+            isAttackedCardEnemy = 1;
+        } else if (game.getPlayerTurn() == game.getPlayer2() && (xAttacked == 2 || xAttacked == 3)) {
+            isAttackedCardEnemy = 1;
+        }
+        if (isAttackedCardEnemy == 0) {
+            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
+                    yAttacker, objectMapper, resultNode);
+            resultNode.put("error", "Attacked card does not belong to the enemy.");
+            output.add(resultNode);
+            return;
+        }
+
+        boolean enemyHasTank = false;
+        final int enemyFrontRow;
+
+        if (game.getPlayerTurn() == game.getPlayer1()) {
+            enemyFrontRow = 1;
+        } else {
+            enemyFrontRow = 2;
+        }
+
+        for (final Minion minion : game.getBoard()[enemyFrontRow]) {
+            if (minion != null && minion.isTank()) {
+                enemyHasTank = true;
+                break;
+            }
+        }
+
+        if (enemyHasTank && !attackedCard.isTank()) {
+            cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
+                    yAttacker, objectMapper, resultNode);
+            resultNode.put("error", "Attacked card is not of type 'Tank'.");
+            output.add(resultNode);
+            return;
+        }
+
+        internalUseAbility(xAttacked, yAttacked, xAttacker, yAttacker, objectMapper, output, game, resultNode, attackedCard);
+
+        attackerCard.setHasAttacked(true);
+    }
+
+    /**
+     * Internal use ability.
+     *
+     * @param xAttacked    the x attacked
+     * @param yAttacked    the y attacked
+     * @param xAttacker    the x attacker
+     * @param yAttacker    the y attacker
+     * @param objectMapper the object mapper
+     * @param output       the output
+     * @param game         the game
+     * @param resultNode   the result node
+     * @param attackedCard the attacked card
+     */
+    protected abstract void internalUseAbility(final int xAttacked, final int yAttacked,
+                                    final int xAttacker, final int yAttacker,
+                                    final ObjectMapper objectMapper,
+                                               final ArrayNode output, final Game game, final ObjectNode resultNode,
+                                               Minion attackedCard
+                                               );
+
+    /**
+     * Card uses ability output.
+     *
+     * @param xAttacked    the x attacked
+     * @param yAttacked    the y attacked
+     * @param xAttacker    the x attacker
+     * @param yAttacker    the y attacker
+     * @param objectMapper the object mapper
+     * @param resultNode   the result node
+     */
+    protected void cardUsesAbilityOutput(final int xAttacked, final int yAttacked,
+                                       final int xAttacker, final int yAttacker,
+                                       final ObjectMapper objectMapper,
+                                       final ObjectNode resultNode) {
+        final ObjectNode attackerCardDetails = objectMapper.createObjectNode();
+        attackerCardDetails.put("x", xAttacker);
+        attackerCardDetails.put("y", yAttacker);
+        final ObjectNode attackedCardDetails = objectMapper.createObjectNode();
+        attackedCardDetails.put("x", xAttacked);
+        attackedCardDetails.put("y", yAttacked);
+
+        resultNode.set("cardAttacked", attackedCardDetails);
+        resultNode.set("cardAttacker", attackerCardDetails);
+
+        resultNode.put("command", "cardUsesAbility");
     }
 }

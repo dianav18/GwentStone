@@ -1,6 +1,10 @@
 package cards.minion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
 import lombok.NoArgsConstructor;
 
 /**
@@ -17,19 +21,21 @@ public final class Miraj extends Minion {
         super(cardInput, false, Row.FRONT);
     }
 
-    /**
-     * Applies the Skyjack ability, which switches the life of the current minion
-     * with the life of an enemyMinion
-     *
-     * @param enemyMinion represents the enemy minion
-     */
-    public void skyjack(final Minion enemyMinion) {
-        final int originalHealth = this.getHealth();
-        this.setHealth(enemyMinion.getHealth());
-        enemyMinion.setHealth(originalHealth);
-    }
 
     protected Minion constructNew() {
         return new Miraj();
+    }
+
+
+    @Override
+    protected void internalUseAbility(final int xAttacked, final int yAttacked,
+                                      final int xAttacker, final int yAttacker,
+                                      final ObjectMapper objectMapper,
+                                      final ArrayNode output, final Game game, final ObjectNode resultNode,
+                                      final Minion attackedCard
+    ){
+        final int originalHealth = this.getHealth();
+        this.setHealth(attackedCard.getHealth());
+        attackedCard.setHealth(originalHealth);
     }
 }

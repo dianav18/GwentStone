@@ -1,6 +1,10 @@
 package cards.minion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
 import lombok.NoArgsConstructor;
 
 /**
@@ -17,24 +21,24 @@ public final class TheRipper extends Minion {
         super(cardInput, false, Row.FRONT);
     }
 
-    /**
-     * Executes the WeakKnees ability which decrements the attack of the
-     * enemy minion by 2
-     *
-     * @param enemyMinion the enemy minion
-     */
-    public void weakKnees(final Minion enemyMinion) {
-        int newAttackDamage = enemyMinion.getAttackDamage() - 2;
+    protected Minion constructNew() {
+        return new TheRipper();
+    }
+
+    @Override
+    protected void internalUseAbility(final int xAttacked, final int yAttacked,
+                                      final int xAttacker, final int yAttacker,
+                                      final ObjectMapper objectMapper,
+                                      final ArrayNode output, final Game game, final ObjectNode resultNode,
+                                      final Minion attackedCard
+    ){
+
+        int newAttackDamage = attackedCard.getAttackDamage() - 2;
 
         if (newAttackDamage < 0) {
             newAttackDamage = 0;
         }
 
-        enemyMinion.setAttackDamage(newAttackDamage);
-
-    }
-
-    protected Minion constructNew() {
-        return new TheRipper();
+        attackedCard.setAttackDamage(newAttackDamage);
     }
 }

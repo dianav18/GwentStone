@@ -57,7 +57,6 @@ public class Player {
     public void setup() {
         this.hand = new Hand();
         this.mana = 0;
-        // TODO and mana etc
     }
 
     /**

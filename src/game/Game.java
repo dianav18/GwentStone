@@ -5,14 +5,16 @@ import cards.minion.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import debug.PlaceCard;
+import actions.PlaceCard;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Game.
+ * Represents a game session between two players.
+ * This class handles game initialization, game logic, and player interactions,
+ * including managing the board, player actions, and game state.
  */
 @Getter
 public class Game {
@@ -32,8 +34,17 @@ public class Game {
     private final Hero player1Hero;
     private final Hero player2Hero;
 
+    /**
+     * The constant endedGames.
+     */
     public static int endedGames = 0;
+    /**
+     * The constant playerOneWins.
+     */
     public static int playerOneWins = 0;
+    /**
+     * The constant playerTwoWins.
+     */
     public static int playerTwoWins = 0;
 
     private boolean gameEnded = false;
@@ -66,6 +77,17 @@ public class Game {
         this.player2Hero = player2Hero;
         nextRound();
     }
+    /**
+     * Generates the output structure for a "cardUsesAttack" command.
+     *
+     * @param xAttacked            The row position of the attacked card.
+     * @param yAttacked            The column position of the attacked card.
+     * @param xAttacker            The row position of the attacker card.
+     * @param yAttacker            The column position of the attacker card.
+     * @param objectMapper         The ObjectMapper used for creating JSON objects.
+     * @param attackerCardDetails  The ObjectNode to store details about the attacker card.
+     * @param resultNode           The ObjectNode to store the complete result, including attacker and attacked card details.
+     */
 
     private static void cardUsesAttackOutput(final int xAttacked, final int yAttacked,
                                              final int xAttacker, final int yAttacker,
@@ -85,7 +107,7 @@ public class Game {
     }
 
     /**
-     * Next round.
+     * Implements the logic for the next round.
      */
     public void nextRound() {
         if (gameEnded) {
@@ -109,7 +131,7 @@ public class Game {
     }
 
     /**
-     * End turn.
+     * Implements the logic for the end of the turn.
      */
     public void endTurn() {
         if (gameEnded) {
@@ -173,11 +195,15 @@ public class Game {
     }
 
     /**
-     * Place card.
+     * Places a card from the player's hand onto the table.
+     * <p>
+     * This method attempts to place a card from the player's hand onto the appropriate row of the table,
+     * based on the card's row position and the game rules. It validates conditions such as sufficient mana
+     * and available space on the row. If any condition is not met, an error is added to the output.
      *
-     * @param cardIndex    the card index
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param cardIndex    The index of the card in the player's hand to be placed on the table.
+     * @param objectMapper The ObjectMapper used for creating JSON error messages.
+     * @param output       The ArrayNode where any error messages or results will be added.
      */
     public void placeCard(final int cardIndex, final ObjectMapper objectMapper,
                           final ArrayNode output) {
@@ -225,9 +251,11 @@ public class Game {
     }
 
     /**
-     * Gets cards on table.
+     * Retrieves all the cards currently on the table.
+     * This method iterates through the game board and collects all the non-null cards
+     * from each row. The cards are grouped into lists corresponding to each row on the table.
      *
-     * @return the cards on table
+     * @return A list of lists, where each inner list represents a row of cards on the table.         Each inner list contains the Minion objects currently present on that row.         Empty rows will be represented by empty lists.
      */
     public List<List<Minion>> getCardsOnTable() {
         final List<List<Minion>> cardsOnTable = new ArrayList<>();
@@ -245,12 +273,15 @@ public class Game {
     }
 
     /**
-     * Gets card at position.
+     * Retrieves the card located at a specific position on the game board.
+     * This method checks the specified position on the game board to determine if a card exists
+     * there. If a card is found, its details (mana, attack damage, health, description, colors, and name)
+     * are added to the output. If no card is found, an appropriate message is added instead.
      *
-     * @param x            the x
-     * @param y            the y
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param x            The row index of the card's position on the board (0-based).
+     * @param y            The column index of the card's position on the board (0-based).
+     * @param objectMapper The ObjectMapper used for creating JSON objects.
+     * @param output       The ArrayNode where the result (card details or an error message)                     will be appended.
      */
     public void getCardAtPosition(final int x, final int y,
                                   final ObjectMapper objectMapper,
@@ -285,14 +316,14 @@ public class Game {
     }
 
     /**
-     * Card uses attack.
+     * Handles the logic for a card attacking another card on the game board.
      *
-     * @param xAttacked    the x attacked
-     * @param yAttacked    the y attacked
-     * @param xAttacker    the x attacker
-     * @param yAttacker    the y attacker
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param xAttacked    the row index of the card being attacked.
+     * @param yAttacked    the column index of the card being attacked.
+     * @param xAttacker    the row index of the attacking card.
+     * @param yAttacker    the column index of the attacking card.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param output       the ArrayNode to which the result of the operation is added.
      */
     public void cardUsesAttack(final int xAttacked, final int yAttacked,
                                final int xAttacker, final int yAttacker,
@@ -385,14 +416,16 @@ public class Game {
     }
 
     /**
-     * Card uses ability.
+     * Executes the ability of a card on the game board.
+     * Validates the action based on the game rules and performs the ability effect.
+     * Handles both ally-targeting and enemy-targeting abilities, as well as tank prioritization.
      *
-     * @param xAttacked    the x attacked
-     * @param yAttacked    the y attacked
-     * @param xAttacker    the x attacker
-     * @param yAttacker    the y attacker
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param xAttacked    the row index of the card being targeted by the ability.
+     * @param yAttacked    the column index of the card being targeted by the ability.
+     * @param xAttacker    the row index of the card using the ability.
+     * @param yAttacker    the column index of the card using the ability.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param output       the ArrayNode to which the result of the operation is added.
      */
     public void cardUsesAbility(final int xAttacked, final int yAttacked,
                                 final int xAttacker, final int yAttacker,
@@ -423,84 +456,19 @@ public class Game {
             return;
         }
 
-        if (attackerCard instanceof Disciple) {
-            boolean isAttackedCardAlly = false;
+        attackerCard.useAbility( xAttacked, yAttacked,xAttacker,  yAttacker,objectMapper,output, this, resultNode);
 
-            if (getPlayerTurn() == player1 && (xAttacked == 2 || xAttacked == 3)) {
-                isAttackedCardAlly = true;
-            } else if (getPlayerTurn() == player2 && (xAttacked == 0 || xAttacked == 1)) {
-                isAttackedCardAlly = true;
-            }
-
-            if (!isAttackedCardAlly) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
-                        yAttacker, objectMapper, resultNode);
-                resultNode.put("error", "Attacked card does"
-                        + " not belong to the current player.");
-                output.add(resultNode);
-                return;
-            }
-            ((Disciple) attackerCard).godsPlan(attackedCard);
-            attackerCard.setHasAttacked(true);
-        }
-
-        if (attackerCard instanceof TheRipper || attackerCard instanceof Miraj
-                || attackerCard instanceof TheCursedOne) {
-            int isAttackedCardEnemy = 0;
-
-            if (getPlayerTurn() == player1 && (xAttacked == 0 || xAttacked == 1)) {
-                isAttackedCardEnemy = 1;
-            } else if (getPlayerTurn() == player2 && (xAttacked == 2 || xAttacked == 3)) {
-                isAttackedCardEnemy = 1;
-            }
-            if (isAttackedCardEnemy == 0) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
-                        yAttacker, objectMapper, resultNode);
-                resultNode.put("error", "Attacked card does not belong to the enemy.");
-                output.add(resultNode);
-                return;
-            }
-
-            boolean enemyHasTank = false;
-            final int enemyFrontRow;
-
-            if (getPlayerTurn() == player1) {
-                enemyFrontRow = 1;
-            } else {
-                enemyFrontRow = 2;
-            }
-
-            for (final Minion minion : board[enemyFrontRow]) {
-                if (minion != null && minion.isTank()) {
-                    enemyHasTank = true;
-                    break;
-                }
-            }
-
-            if (enemyHasTank && !attackedCard.isTank()) {
-                cardUsesAbilityOutput(xAttacked, yAttacked, xAttacker,
-                        yAttacker, objectMapper, resultNode);
-                resultNode.put("error", "Attacked card is not of type 'Tank'.");
-                output.add(resultNode);
-                return;
-            }
-            switch (attackerCard.getName()) {
-                case "The Ripper":
-                    ((TheRipper) attackerCard).weakKnees(attackedCard);
-                    break;
-                case "Miraj":
-                    ((Miraj) attackerCard).skyjack(attackedCard);
-                    break;
-                case "The Cursed One":
-                    ((TheCursedOne) attackerCard).shapeShift(attackedCard);
-                    break;
-                default:
-                    break;
-            }
-            attackerCard.setHasAttacked(true);
-        }
     }
 
+    /**
+     * Handles the general error output format for cardUsesAbility.
+     * @param xAttacked    the x-coordinate (row index) of the card being targeted by the ability.
+     * @param yAttacked    the y-coordinate (column index) of the card being targeted by the ability.
+     * @param xAttacker    the x-coordinate (row index) of the card using the ability.
+     * @param yAttacker    the y-coordinate (column index) of the card using the ability.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param resultNode   the ArrayNode to which the result of the operation is added.
+     */
     private void cardUsesAbilityOutput(final int xAttacked, final int yAttacked,
                                        final int xAttacker, final int yAttacker,
                                        final ObjectMapper objectMapper,
@@ -519,13 +487,16 @@ public class Game {
     }
 
     /**
-     * Use attack hero.
+     * Executes an attack from a minion on the game board against the opposing hero.
+     * Validates the attack based on the game rules, including checking for frozen status,
+     * prior attacks during the turn, and the presence of tank minions that must be attacked first.
+     * Updates the hero's health and tracks game-end conditions if the hero's health drops to zero.
      *
-     * @param xAttacker    the x attacker
-     * @param yAttacker    the y attacker
-     * @param attackedHero the attacked hero
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param xAttacker    the x-coordinate (row index) of the attacking minion.
+     * @param yAttacker    the y-coordinate (column index) of the attacking minion.
+     * @param attackedHero the hero being attacked.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param output       the ArrayNode to which the result of the operation is added.
      */
     public void useAttackHero(final int xAttacker, final int yAttacker,
                               final Hero attackedHero,
@@ -604,6 +575,13 @@ public class Game {
         }
     }
 
+    /**
+     * Handles the generic error output for useAttackHero.
+     * @param xAttacker    the x-coordinate (row index) of the attacking minion.
+     * @param yAttacker    the y-coordinate (column index) of the attacking minion.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param resultNode   the ArrayNode to which the result of the operation is added.
+     */
     private void useAttackHeroOutput(final int xAttacker, final int yAttacker,
                                      final ObjectMapper objectMapper,
                                      final ObjectNode resultNode) {
@@ -617,11 +595,14 @@ public class Game {
     }
 
     /**
-     * Use hero ability.
+     * Executes the hero's special ability on a specified row of the game board.
+     * Validates the ability's usage based on game rules, including mana availability,
+     * prior usage in the turn, and the target row's validity for the hero's type.
+     * Updates the game state, including hero's attack status and player's mana.
      *
-     * @param affectedRow  the affected row
-     * @param objectMapper the object mapper
-     * @param output       the output
+     * @param affectedRow  the index of the row affected by the hero's ability.
+     * @param objectMapper the ObjectMapper used for creating JSON objects.
+     * @param output       the ArrayNode to which the result of the operation is added.
      */
     public void useHeroAbility(final int affectedRow,
                                final ObjectMapper objectMapper,
@@ -654,58 +635,15 @@ public class Game {
             return;
         }
 
-        if (hero instanceof LordRoyce || hero instanceof EmpressThorina) {
-            if (!isEnemyRow(player, affectedRow)) {
-                resultNode.put("command", "useHeroAbility");
-                resultNode.put("affectedRow", affectedRow);
-                resultNode.put("error", "Selected row does not belong to the enemy.");
-                output.add(resultNode);
-                return;
-            }
-
-            switch (hero.getName()) {
-                case "Lord Royce":
-                    ((LordRoyce) hero).subZero(board, affectedRow);
-                    break;
-                case "Empress Thorina":
-                    EmpressThorina.lowBlow(board, affectedRow);
-                    break;
-                default:
-                    break;
-            }
-            player.setMana(player.getMana() - hero.getMana());
-            hero.setHasAttacked(true);
-        }
-
-        if (hero instanceof GeneralKocioraw || hero instanceof KingMudface) {
-            if (!isPlayerRow(player, affectedRow)) {
-                resultNode.put("command", "useHeroAbility");
-                resultNode.put("affectedRow", affectedRow);
-                resultNode.put("error", "Selected row does not belong to the current player.");
-                output.add(resultNode);
-                return;
-            }
-            switch (hero.getName()) {
-                case "General Kocioraw":
-                    GeneralKocioraw.bloodThirst(board, affectedRow);
-                    break;
-                case "King Mudface":
-                    ((KingMudface) hero).earthBorn(board, affectedRow);
-                    break;
-                default:
-                    break;
-            }
-            player.setMana(player.getMana() - hero.getMana());
-            hero.setHasAttacked(true);
-        }
+        hero.useAbility(this, player, affectedRow, resultNode, output);
     }
 
     /**
-     * Is enemy row boolean.
+     * Verifies if the given row belongs to the enemy player.
      *
-     * @param player the player
-     * @param row    the row
-     * @return the boolean
+     * @param player the player.
+     * @param row    the row.
+     * @return the boolean.
      */
     public boolean isEnemyRow(final Player player, final int row) {
         if (player.getPlayerIdx() == 1) {
@@ -717,11 +655,11 @@ public class Game {
     }
 
     /**
-     * Is player row boolean.
+     * Verifies if the given row belongs to the given player.
      *
-     * @param player the player
-     * @param row    the row
-     * @return the boolean
+     * @param player the player.
+     * @param row    the row.
+     * @return the boolean.
      */
     public boolean isPlayerRow(final Player player, final int row) {
         if (player.getPlayerIdx() == 1) {

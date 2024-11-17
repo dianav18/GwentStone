@@ -1,7 +1,11 @@
 package cards.hero;
 
 import cards.minion.Minion;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
+import game.Player;
 
 /**
  * The type Empress thorina.
@@ -16,15 +20,16 @@ public class EmpressThorina extends Hero {
         super(cardInput);
     }
 
-    /**
-     * Executes the LowBlow ability, which destroys the minion with the highest health
-     * on the specified row.
-     *
-     * @param board    the game board
-     * @param rowIndex the index of the targeted row
-     */
-    public static void lowBlow(final Minion[][] board, final int rowIndex) {
-        final Minion[] row = board[rowIndex];
+    public void useAbility(final Game game, final Player player, final int affectedRow, final ObjectNode resultNode, final ArrayNode output){
+        if (!game.isEnemyRow(player, affectedRow)) {
+            resultNode.put("command", "useHeroAbility");
+            resultNode.put("affectedRow", affectedRow);
+            resultNode.put("error", "Selected row does not belong to the enemy.");
+            output.add(resultNode);
+            return;
+        }
+
+        final Minion[] row = game.getBoard()[affectedRow];
 
         Minion targetMinion = null;
         int targetIndex = -1;
@@ -46,5 +51,8 @@ public class EmpressThorina extends Hero {
             }
             row[row.length - 1] = null;
         }
+
+        player.setMana(player.getMana() - this.getMana());
+        this.setHasAttacked(true);
     }
 }

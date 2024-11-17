@@ -40,18 +40,5 @@ public class StartGame {
 
         this.playerOneHero = Hero.create(startGameInput.getPlayerOneHero());
         this.playerTwoHero = Hero.create(startGameInput.getPlayerTwoHero());
-
-        setDeckForPlayer(playerOne, playerOneDeckIdx, shuffleSeed);
-        setDeckForPlayer(playerTwo, playerTwoDeckIdx, shuffleSeed);
     }
-
-    private void setDeckForPlayer(final Player player, final int deckIndex, final int shuffleSeed) {
-//        ArrayList<CardInput> selectedDeck = new ArrayList<>(player.getDecks().get(deckIndex));
-//
-//        Random random = new Random(shuffleSeed);
-//        Collections.shuffle(selectedDeck, random);
-//
-//        player.setCurrentDeck(selectedDeck);
-    }
-
 }

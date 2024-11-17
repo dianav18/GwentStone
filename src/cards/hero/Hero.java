@@ -1,7 +1,11 @@
 package cards.hero;
 
 import cards.Card;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
+import game.Game;
+import game.Player;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,8 +45,7 @@ public abstract class Hero extends Card {
     /**
      * Constructor for initializing a Hero object based on the provided card input.
      *
-     * @param input the input containing the hero's attributes such as mana,
-     * description, colors, and name
+     * @param input the input containing the hero's attributes such as mana, description, colors, and name
      * @return the hero
      */
     public static Hero create(final CardInput input) {
@@ -62,25 +65,6 @@ public abstract class Hero extends Card {
     }
 
     /**
-     * Checks if the hero has enough mana to use their ability.
-     *
-     * @param abilityHandCost the mana cost of the hero's ability
-     * @return true if the hero has sufficient mana, false otherwise
-     */
-    public boolean canUseAbility(final int abilityHandCost) {
-        return this.mana >= abilityHandCost;
-    }
-
-    /**
-     * Deducts the mana cost of the hero's ability from the hero's current mana.
-     *
-     * @param abilityHandCost the mana cost of the hero's ability
-     */
-    public void useAbility(final int abilityHandCost) {
-        this.mana -= abilityHandCost;
-    }
-
-    /**
      * Checks if the hero has already attacked during the current turn.
      *
      * @return true if the hero has attacked, false otherwise
@@ -88,4 +72,16 @@ public abstract class Hero extends Card {
     public boolean hasAttacked() {
         return this.hasAttacked;
     }
+
+    /**
+     * Use ability.
+     *
+     * @param game        the game
+     * @param player      the player
+     * @param affectedRow the affected row
+     * @param resultNode  the result node
+     * @param output      the output
+     */
+    public abstract void useAbility(Game game, Player player, final int affectedRow, ObjectNode resultNode, final ArrayNode output);
+
 }
