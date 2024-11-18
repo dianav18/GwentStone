@@ -32,7 +32,6 @@ public class Deck {
      * @param deck the deck
      */
     public Deck(final Deck deck) {
-        // performs a copy
         this.minions = new ArrayList<>(deck.minions.stream().map(Minion::copy).
                 collect(Collectors.toList()));
     }

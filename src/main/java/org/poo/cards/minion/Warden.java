@@ -33,6 +33,5 @@ public final class Warden extends Minion {
                                       final ObjectNode resultNode,
                                       final Minion attackedCard
     ) {
-        // No ability
     }
 }

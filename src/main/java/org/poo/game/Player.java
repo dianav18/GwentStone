@@ -18,7 +18,9 @@ public class Player {
     /**
      * The Hero input.
      */
-    CardInput heroInput;
+    @Getter
+    @Setter
+    private CardInput heroInput;
     private final List<Deck> decks;
     private Deck currentDeck;
     private Hand hand;
@@ -35,6 +37,7 @@ public class Player {
     private int player1Idx;
     @Setter
     private int player2Idx;
+    private final int maxRounds = 10;
 
     /**
      * Instantiates a new Player.
@@ -73,13 +76,13 @@ public class Player {
     /**
      * Next round.
      *
-     * @param round the round
+     * @param currentRound the round
      */
-    public void nextRound(final int round) {
+    public void nextRound(final int currentRound) {
         if (!currentDeck.getMinions().isEmpty()) {
-            this.hand.getMinions().add(this.currentDeck.getMinions().remove(0));
+            this.hand.getMinions().add(this.currentDeck.getMinions().removeFirst());
         }
 
-        this.mana += Math.min(round, 10);
+        this.mana += Math.min(currentRound, maxRounds);
     }
 }

@@ -28,7 +28,7 @@ public class GetTotalGamesPlayed {
     public ObjectNode getTotalGamesPlayed(final ObjectMapper objectMapper) {
         final ObjectNode resultNode = objectMapper.createObjectNode();
         resultNode.put("command", "getTotalGamesPlayed");
-        resultNode.put("output", Game.endedGames);
+        resultNode.put("output", Game.getEndedGames());
         return resultNode;
     }
 }

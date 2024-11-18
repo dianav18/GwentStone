@@ -79,9 +79,9 @@ public final class Main {
     public static void action(final String filePath1,
                               final String filePath2)
             throws IOException {
-        Game.endedGames = 0;
-        Game.playerOneWins = 0;
-        Game.playerTwoWins = 0;
+        Game.setEndedGames(0);
+        Game.setPlayerOneWins(0);
+        Game.setPlayerTwoWins(0);
 
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);

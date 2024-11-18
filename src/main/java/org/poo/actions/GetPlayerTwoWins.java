@@ -28,7 +28,7 @@ public class GetPlayerTwoWins {
     public ObjectNode getPlayerTwoWins(final ObjectMapper objectMapper) {
         final ObjectNode resultNode = objectMapper.createObjectNode();
         resultNode.put("command", "getPlayerTwoWins");
-        resultNode.put("output", Game.playerTwoWins);
+        resultNode.put("output", Game.getPlayerTwoWins());
         return resultNode;
     }
 }

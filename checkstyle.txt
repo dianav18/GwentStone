@@ -1,21 +1,5 @@
 Starting audit...
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:41:23: Variable 'endedGames' must be private and have accessor methods. [VisibilityModifier]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:45:23: Variable 'playerOneWins' must be private and have accessor methods. [VisibilityModifier]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:49:23: Variable 'playerTwoWins' must be private and have accessor methods. [VisibilityModifier]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:230:27: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:242:37: '5' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:268:29: '4' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:270:33: '5' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:301:17: '4' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:301:26: '5' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:351:82: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:467:26: ',' is not followed by whitespace. [WhitespaceAfter]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:661:39: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Game.java:675:39: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Player.java:21:15: Variable 'heroInput' must be private and have accessor methods. [VisibilityModifier]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Player.java:78:37: 'round' hides a field. [HiddenField]
-[ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\game\Player.java:83:38: '10' is a magic number. [MagicNumber]
 [ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\main\Main.java:11:23: Using the '.*' form of import should be avoided - org.poo.actions.*. [AvoidStarImport]
 [ERROR] C:\Users\didiv\OneDrive\Desktop\tema0-maven\.\src\main\java\org\poo\main\Main.java:79:5: Method action length is 175 lines (max allowed is 150). [MethodLength]
 Audit done.
-Checkstyle ends with 18 errors.
+Checkstyle ends with 2 errors.

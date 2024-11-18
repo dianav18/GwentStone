@@ -1,5 +1,6 @@
 package org.poo.game;
 
+import lombok.Setter;
 import org.poo.cards.hero.Hero;
 import org.poo.cards.minion.Minion;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,15 +39,21 @@ public class Game {
     /**
      * The constant endedGames.
      */
-    public static int endedGames = 0;
+    @Getter
+    @Setter
+    private static int endedGames = 0;
     /**
      * The constant playerOneWins.
      */
-    public static int playerOneWins = 0;
+    @Getter
+    @Setter
+    private static int playerOneWins = 0;
     /**
      * The constant playerTwoWins.
      */
-    public static int playerTwoWins = 0;
+    @Getter
+    @Setter
+    private static int playerTwoWins = 0;
 
     private boolean gameEnded = false;
 
@@ -224,21 +231,27 @@ public class Game {
 
             final int row;
 
+            final int playerOneBackRow = 3;
+            final int playerOneFrontRow = 2;
+
+            final int playerTwoBackRow = 0;
+            final int playerTwoFrontRow = 1;
+
             if (player == player1) {
                 if (minion.getRowPosition() == Row.BACK) {
-                    row = 3;
+                    row = playerOneBackRow;
                 } else {
-                    row = 2;
+                    row = playerOneFrontRow;
                 }
             } else {
                 if (minion.getRowPosition() == Row.BACK) {
-                    row = 0;
+                    row = playerTwoBackRow;
                 } else {
-                    row = 1;
+                    row = playerTwoFrontRow;
                 }
             }
 
-            for (int col = 0; col < 5; col++) {
+            for (int col = 0; col < numOfCols; col++) {
                 if (board[row][col] == null) {
                     board[row][col] = minion;
                     handMinions.remove(cardIndex);
@@ -264,9 +277,9 @@ public class Game {
     public List<List<Minion>> getCardsOnTable() {
         final List<List<Minion>> cardsOnTable = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < numOfRows; i++) {
             final List<Minion> row = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < numOfCols; j++) {
                 if (board[i][j] != null) {
                     row.add(board[i][j]);
                 }
@@ -297,7 +310,7 @@ public class Game {
         resultNode.put("x", x);
         resultNode.put("y", y);
 
-        if (x < 4 && y < 5 && board[x][y] != null) {
+        if (x < numOfRows && y < numOfCols && board[x][y] != null) {
             final Minion minion = board[x][y];
 
             final ObjectNode cardDetails = objectMapper.createObjectNode();
@@ -343,11 +356,14 @@ public class Game {
         if (attackerCard == null || attackedCard == null) {
             return;
         }
-        int isAttackedCardEnemy = 0;
 
+        final int playerOneBackRow = 3;
+
+        int isAttackedCardEnemy = 0;
         if (getPlayerTurn() == player1 && (xAttacked == 0 || xAttacked == 1)) {
             isAttackedCardEnemy = 1;
-        } else if (getPlayerTurn() == player2 && (xAttacked == 2 || xAttacked == 3)) {
+        } else if (getPlayerTurn() == player2 && (xAttacked == 2
+                || xAttacked == playerOneBackRow)) {
             isAttackedCardEnemy = 1;
         }
 
@@ -463,7 +479,7 @@ public class Game {
         }
 
         attackerCard.useAbility(xAttacked, yAttacked, xAttacker,
-                yAttacker,objectMapper, output, this, resultNode);
+                yAttacker, objectMapper, output, this, resultNode);
 
     }
 
@@ -654,10 +670,11 @@ public class Game {
      * @return the boolean.
      */
     public boolean isEnemyRow(final Player player, final int row) {
+        final int playerOneBackRow = 3;
         if (player.getPlayerIdx() == 1) {
             return row == 0 || row == 1;
         } else if (player.getPlayerIdx() == 2) {
-            return row == 2 || row == 3;
+            return row == 2 || row == playerOneBackRow;
         }
         return false;
     }
@@ -670,8 +687,9 @@ public class Game {
      * @return the boolean.
      */
     public boolean isPlayerRow(final Player player, final int row) {
+        final int playerOneBackRow = 3;
         if (player.getPlayerIdx() == 1) {
-            return row == 2 || row == 3;
+            return row == 2 || row == playerOneBackRow;
         } else if (player.getPlayerIdx() == 2) {
             return row == 0 || row == 1;
         }
