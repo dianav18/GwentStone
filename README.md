@@ -1,42 +1,75 @@
+# GwentStone - README
 
+## Overview
 
-# Tema POO  - GwentStone
+This project is a Java-based card game where two players take turns in a battle on a **4x5 board**. The game is
+designed to be well-organized and easy to maintain using object-oriented programming principles. Players place cards on
+the board, representing minions with special abilities, and try to win by bringing down their opponent's **hero**.
 
-<div align="center"><img src="https://tenor.com/view/witcher3-gif-9340436.gif" width="500px"></div>
+---
 
-#### Assignment Link: [https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema](https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema)
+## Structure
 
+The project is divided into the following main components:
 
-## Skel Structure
+### 1. **Actions**
 
-* src/
-  * checker/ - checker files
-  * fileio/ - contains classes used to read data from the json files
-  * main/
-      * Main - the Main class runs the checker on your implementation. Add the entry point to your implementation in it. Run Main to test your implementation from the IDE or from command line.
-      * Test - run the main method from Test class with the name of the input file from the command line and the result will be written
-        to the out.txt file. Thus, you can compare this result with ref.
-* input/ - contains the tests in JSON format
-* ref/ - contains all reference output for the tests in JSON format
+The `actions` package is where all the main moves and commands in the game are handled. It includes everything the
+players or cards can do during the game, like attacking, using abilities, or placing cards on the board.
+This package makes sure that all actions follow the rules of the game and are executed properly.
 
-## Tests
+---
 
-1. test01_game_start - 4p
-2. test02_place_card - 5p
-3. test03_place_card_invalid - 5p
-4. test04_attack_card - 5p
-5. test05_attack_card_invalid - 5p
-6. test06_use_card_ability - 5p
-7. test07_use_card_ability_invalid - 5p
-8. test08_attack_hero - 5p
-9. test09_attack_hero_invalid - 5p
-10. test10_use_hero_ability_1 - 4p
-11. test11_use_hero_ability_2 - 4p
-12. test12_use_hero_ability_invalid_1 - 4p
-13. test13_use_hero_ability_invalid_2 - 4p
-14. test14_multiple_games_valid - 5p
-15. test15_multiple_games_invalid - 5p
-16. test16_big_game - 10p
+### 2. **Cards**
+The `cards` package is the foundation of the game, as it contains all the card-related components. Cards are split into
+two main categories: heroes and minions. The main class is the Card class. It is extended by the Minion and Hero
+classes. These classes are further specialised into various subclasses which have special abilities needed for the game
+interaction.
 
+---
 
-<div align="center"><img src="https://tenor.com/view/homework-time-gif-24854817.gif" width="500px"></div>
+### 3. **Game Mechanics**
+
+The `game` package forms the core of the application, managing players, the board, and game flow. The Game class
+orchestrates the turn-based gameplay, handling the board's 4x5 grid, turn logic, and win conditions. Each Player has a
+Deck for drawing cards, a Hand for playing them, and a Hero with unique abilities. The Row enum distinguishes between
+front and back rows on the board, as needed for placing the different types of minions.
+
+---
+
+### 4. **Game Setup**
+
+The setup and initialization of the game are managed by the following classes:
+
+- **StartGame.java**: Handles the setup logic for starting a new game, including shuffling decks and assigning
+  starting turns.
+- **Main.java**: Entry point for the game. It orchestrates the initialization, execution, and management of game
+  commands.
+
+---
+### Object-Oriented Programming (OOP) Concepts
+
+1. **Encapsulation**:
+- Each class manages its own state and behavior through private fields and public methods.
+
+2. **Inheritance**:
+- The `Card` class serves as a base for specialized cards like `Hero` and `Minion`, sharing common attributes like 
+`mana` and `description`. Heroes and minions extend this base, adding unique behaviors such as special abilities.
+
+3. **Polymorphism**:
+- Hero abilities are implemented as abstract methods in the `Hero` class, allowing each subclass to define its specific
+behavior while maintaining a consistent interface.
+
+4. **Abstraction**:
+- The use of abstract classes like `Hero` and `Minion`.
+
+---
+
+### Game Flow and Interactions
+
+The game begins with two players selecting a hero and deck, initialized in the `Game` class. Players alternate turns,
+drawing cards, placing them on the 4x5 board, and activating abilities. Turn logic and actions like attacking or using
+abilities are managed by dedicated classes in the `actions` package. Heroes contribute unique abilities, while the
+dynamic interactions between cards, players, and the board create strategic depth and variability in gameplay.
+
+---

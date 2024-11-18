@@ -200,8 +200,7 @@ public class Game {
      * Places a card from the player's hand onto the table.
      * This method attempts to place a card from the player's hand onto the appropriate
      * row of the table, based on the card's row position and the game rules. It
-     * validates conditions such as sufficient mana
-     * and available space on the row. If any condition is not met, an error is added
+     * validates some conditions. If some of them are not met, an error is added
      * to the output.
      *
      * @param cardIndex    The index of the card in the player's hand to be placed on the table.
